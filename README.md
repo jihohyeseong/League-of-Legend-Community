@@ -1,1 +1,1 @@
-# SoccerCommunity
+# League of Legend Community
