@@ -52,4 +52,14 @@ public class Community {
                 community.getCommentsCount()
         );
     }
+
+    public void patch(UserInfo userInfo, Community community) {
+
+        this.nickname = userInfo.getNickname();
+        if(community.getTitle() != null)
+            this.title = community.getTitle();
+        if(community.getContent() != null)
+            this.content = community.getContent();
+        this.updatedAt = LocalDateTime.now();
+    }
 }

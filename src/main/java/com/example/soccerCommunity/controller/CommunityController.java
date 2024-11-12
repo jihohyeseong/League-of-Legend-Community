@@ -48,4 +48,29 @@ public class CommunityController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
+
+    @PatchMapping("/community/{id}")
+    public ResponseEntity<CommunityDto> patchCommunity(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+                                                       @PathVariable Long id,
+                                                       @RequestBody CommunityDto communityDto){
+
+        String username = customOAuth2User.getUsername();
+        CommunityDto dto = communityService.patchCommunity(username, id, communityDto);
+
+        return (dto != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(dto) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @DeleteMapping("/community/{id}")
+    public ResponseEntity<CommunityDto> deleteCommunity(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+                                                        @PathVariable Long id){
+
+        String username = customOAuth2User.getUsername();
+        CommunityDto dto = communityService.deleteCommunity(username, id);
+
+        return (dto != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(dto) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
 }

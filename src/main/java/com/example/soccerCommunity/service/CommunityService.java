@@ -48,4 +48,34 @@ public class CommunityService {
 
         return Community.toDto(created);
     }
+
+    @Transactional
+    public CommunityDto patchCommunity(String username, Long id, CommunityDto communityDto) {
+
+        UserInfo userInfo = userInfoRepository.findByUser_Username(username);
+        Community target = communityRepository.findById(id).orElse(null);
+        if(target == null || id != communityDto.getId())
+            return null;
+        Community community = CommunityDto.toEntity(userInfo.getNickname(), communityDto);
+
+        target.patch(userInfo, community);
+
+        Community result = communityRepository.save(target);
+
+        return Community.toDto(result);
+    }
+
+    @Transactional
+    public CommunityDto deleteCommunity(String username, Long id) {
+
+        UserInfo userInfo = userInfoRepository.findByUser_Username(username);
+        Community target = communityRepository.findById(id).orElse(null);
+        if(target == null || !userInfo.getUser().getUsername().equals(username)){
+            return null;
+        }
+
+        communityRepository.delete(target);
+
+        return Community.toDto(target);
+    }
 }

@@ -87,6 +87,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/").permitAll()
                         .anyRequest().authenticated()
+
         );
 
         // 로그아웃 설정
