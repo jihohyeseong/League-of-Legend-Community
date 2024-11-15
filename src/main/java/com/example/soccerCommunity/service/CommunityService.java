@@ -54,7 +54,7 @@ public class CommunityService {
 
         UserInfo userInfo = userInfoRepository.findByUser_Username(username);
         Community target = communityRepository.findById(id).orElse(null);
-        if(target == null || id != communityDto.getId())
+        if(target == null || !target.getNickname().equals(userInfo.getNickname()))
             return null;
         Community community = CommunityDto.toEntity(userInfo.getNickname(), communityDto);
 
@@ -70,7 +70,7 @@ public class CommunityService {
 
         UserInfo userInfo = userInfoRepository.findByUser_Username(username);
         Community target = communityRepository.findById(id).orElse(null);
-        if(target == null || !userInfo.getUser().getUsername().equals(username)){
+        if(target == null || !target.getNickname().equals(userInfo.getNickname())){
             return null;
         }
 
