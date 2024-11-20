@@ -29,6 +29,25 @@ public class CommunityController {
         return ResponseEntity.status(HttpStatus.OK).body(communityPage);
     }
 
+    @GetMapping("/community/popularity")
+    public ResponseEntity<Page<CommunityDto>> getPopularityCommunity(@RequestParam(defaultValue = "0") int page){
+
+        int pageSize = 20;
+        Page<CommunityDto> communityPage = communityService.getPopularityPage(page, pageSize);
+
+        return ResponseEntity.status(HttpStatus.OK).body(communityPage);
+    }
+
+    @GetMapping("/community/search/{title}")
+    public ResponseEntity<Page<CommunityDto>> communitySearchByTitle(@RequestParam(defaultValue = "0") int page,
+                                                                     @PathVariable String title){
+
+        int pageSize = 20;
+        Page<CommunityDto> communityPage = communityService.searchByTitle(page, pageSize, title);
+
+        return ResponseEntity.status(HttpStatus.OK).body(communityPage);
+    }
+
     @GetMapping("/community/{id}")
     public ResponseEntity<CommunityDto> getCommunity(@PathVariable Long id){
 
@@ -73,4 +92,18 @@ public class CommunityController {
                 ResponseEntity.status(HttpStatus.OK).body(dto) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
+
+    @PostMapping("community/{id}/like")
+    public ResponseEntity<String> communityLikeButton(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+                                                      @PathVariable Long id){
+
+        String username = customOAuth2User.getUsername();
+
+        boolean beforeLiked = communityService.checkBeforeLiked(username, id);
+
+        return beforeLiked ?
+                ResponseEntity.status(HttpStatus.OK).body("이 글을 좋아합니다.") :
+                ResponseEntity.status(HttpStatus.OK).body("이미 좋아요를 누르셨습니다.");
+    }
+
 }

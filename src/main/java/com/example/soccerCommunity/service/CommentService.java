@@ -9,7 +9,9 @@ import com.example.soccerCommunity.repository.UserInfoRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -39,6 +41,8 @@ public class CommentService {
         Community community = communityRepository.findById(id).orElse(null);
         if(community == null)
             return null;
+        community.setCommentsCount(community.getCommentsCount() + 1L);
+        communityRepository.save(community);
         Comment comment = Comment.toEntity(nickname, community, commentDto);
         Comment created = commentRepository.save(comment);
 
@@ -63,9 +67,13 @@ public class CommentService {
 
         String nickname = userInfoRepository.findByUser_Username(username).getNickname();
         Comment comment = commentRepository.findById(id).orElse(null);
+        Community community = communityRepository.findById(comment.getCommunity().getId()).orElse(null);
 
         if(comment == null || !comment.getNickname().equals(nickname))
             return null;
+
+        community.setCommentsCount(community.getCommentsCount() - 1L);
+        communityRepository.save(community);
 
         commentRepository.delete(comment);
 
