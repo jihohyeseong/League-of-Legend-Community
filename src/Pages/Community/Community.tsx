@@ -36,6 +36,7 @@ function Community() {
   const [comment, setComment] = useState("");
   const [editCommentId, setEditCommentId] = useState<number | null>(null); // 수정할 댓글 ID
   const [editCommentContent, setEditCommentContent] = useState(""); // 수정할 댓글 내용
+  console.log(communityid);
 
   const navigate = useNavigate();
 
@@ -154,6 +155,16 @@ function Community() {
     }
   };
 
+  const onClickLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const response = await fetch(`http://localhost:8080/community/${communityid}/like`, {
+      method: "POST",
+      credentials: "include",
+    });
+    const result = await response.text();
+    alert(result);
+  };
+
   return (
     <Wrapper>
       <MainContainer>
@@ -161,8 +172,12 @@ function Community() {
           <div key={content.id}>
             <Title>{content.title}</Title>
             <div>{content.nickname}</div>
-            <div>{content.createdAt}</div>
+            <div>
+              {content.createdAt} | 조회수:{content.viewsCount} |{" "}
+              <button onClick={onClickLike}>좋아요</button>
+            </div>
             <div dangerouslySetInnerHTML={{ __html: content.content }} />
+            <Title>댓글</Title>
             {commentList.map((comment) => (
               <div key={comment.id}>
                 <ul>

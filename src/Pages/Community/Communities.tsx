@@ -75,7 +75,6 @@ function Communities() {
   const newWrite = (e: React.MouseEvent<HTMLButtonElement>) => {
     navigate("/community/write");
   };
-
   // const { isLoading: LoadingCommunity, data: Community } = useQuery<ICommunity>(
   //   "community",
   //   getCommunityList
@@ -95,12 +94,54 @@ function Communities() {
     })();
   }, []);
 
+  const onClickRecently = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    window.location.reload();
+  };
+
+  const onClickPopularity = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const response = await fetch(`http://localhost:8080/community/popularity`, {
+      method: "GET",
+      credentials: "include",
+    });
+    const json = await response.json();
+    // console.log(json);
+    setCommunitylist(json.content);
+  };
+
+  const [search, setSearch] = useState("");
+  const onClickSearch = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const response = await fetch(
+      `http://localhost:8080/community/search/${search}`,
+      {
+        method: "GET",
+        credentials: "include",
+      }
+    );
+    const json = await response.json();
+    console.log(json);
+    setCommunitylist(json.content);
+  };
+
   return (
     <Wrapper>
       <MainContainer>
         <Title>Community</Title>
         <CreateBtn onClick={newWrite}>글쓰기</CreateBtn>
         <ListBox>
+          <button onClick={onClickPopularity}>인기순</button>
+          <button onClick={onClickRecently}>최신순</button>
+          <form>
+            <input
+              type="text"
+              placeholder="검색어를 입력해주세요"
+              value={search}
+              onChange={(e) => setSearch(e.currentTarget.value)}
+            />
+            <button onClick={onClickSearch}>검색</button>
+          </form>
           <WriteList>
             {communitylist.map((community) => (
               <ListItem key={community.id}>
@@ -109,7 +150,7 @@ function Communities() {
                     {community.title} | {community.nickname}
                   </Link>
                 </strong>
-                <div dangerouslySetInnerHTML={{ __html: community.content }} />
+                {/* <div dangerouslySetInnerHTML={{ __html: community.content }} /> */}
               </ListItem>
             ))}
           </WriteList>
