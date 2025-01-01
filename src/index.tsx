@@ -1,5 +1,4 @@
 import ReactDOM from "react-dom/client";
-import App from "./App";
 import { RecoilRoot, useRecoilValue } from "recoil";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./Styles/theme";
@@ -25,7 +24,7 @@ const GlobalStyle = createGlobalStyle`
       margin: 0;
       padding: 0;
       border: 0;
-      font-size: 100%;
+      font-size: 62.5%;    /* 16px의 상대적 수치 */
       font: inherit;
       vertical-align: baseline;
     }

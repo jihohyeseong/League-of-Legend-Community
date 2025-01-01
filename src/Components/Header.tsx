@@ -1,46 +1,38 @@
-import { motion } from "framer-motion";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { isDarkAtom, isLoginAtom } from "../atom";
 import { Link } from "react-router-dom";
 
-const Nav = styled(motion.nav)`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  height: 60px;
-  font-size: 14px;
-  /* padding: 20px 60px; */
-  padding-left: 50px;
-  color: white;
-  background-color: #00000088;
+const Gnb = styled.nav`
+  padding: 1rem;
+  background-color: #333;
 `;
 
-const Items = styled.ul`
+const Itemlist = styled.ul`
   display: flex;
   align-items: center;
+  justify-content: space-around;
+  gap: 3rem;
 `;
 
 const Item = styled.li`
-  margin-right: 15px;
-  color: white;
-  transition: color 0.3s ease-in-out;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
+  color: #fff;
+  transition: all 0.5s;
+
   &:hover {
-    color: ${(props) => props.theme.accentColor};
+    color: #8a6d3b;
   }
 `;
 
+const ImgBox = styled.div`
+  width: 2rem;
+  height:2rem;
+`;
+
 const Img = styled.img`
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
+width: 100%;
+height: 100%;
+object-fit: cover;
 `;
 
 function Header() {
@@ -51,43 +43,16 @@ function Header() {
   };
 
   const isLogin = useRecoilValue(isLoginAtom);
-  const setLogin = useSetRecoilState(isLoginAtom);
-  const toggleLoginAtom = () => {
-    setLogin((current: boolean) => !current);
-  };
 
   return (
-    <Nav>
-      <Items>
-        <Item>
-          <Link to="/">Home</Link>
-        </Item>
-        <Item>
-          {isLogin ? (
-            <Item>
-              <Link to="/mypage">My Page</Link>
-            </Item>
-          ) : (
-            <Item>
-              <Link to="/login">Log In</Link>
-            </Item>
-          )}
-        </Item>
-        <Item>
-          {isDark ? (
-            <Img
-              src="https://cdn-icons-png.flaticon.com/512/6360/6360844.png"
-              onClick={toggleDarkAtom}
-            ></Img>
-          ) : (
-            <Img
-              src="https://cdn-icons-png.flaticon.com/512/6714/6714978.png"
-              onClick={toggleDarkAtom}
-            ></Img>
-          )}
-        </Item>
-      </Items>
-    </Nav>
+    <Gnb>
+      <Itemlist>
+        <Item><Link to="/">HOME</Link></Item>
+        {isLogin ? <Item><Link to="/login">LOG IN</Link></Item> : <Item><Link to="/mypage">MY PAGE</Link></Item>}
+        {isDark ? <ImgBox><Img src="https://cdn-icons-png.flaticon.com/512/6360/6360844.png" onClick={toggleDarkAtom} /></ImgBox> :
+          <ImgBox><Img src="https://cdn-icons-png.flaticon.com/512/6714/6714978.png" onClick={toggleDarkAtom} /></ImgBox>}
+      </Itemlist>
+    </Gnb >
   );
 }
 

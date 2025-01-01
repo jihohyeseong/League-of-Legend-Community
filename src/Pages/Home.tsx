@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { useNavigate, useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { getCommunityList, ICommunity } from "../api";
 
@@ -104,9 +104,6 @@ function Home() {
               )}
             </CommunityList>
           )}
-        </Box>
-        <Box>
-          <Title>전적 검색</Title>
         </Box>
       </MainContainer>
     </Wrapper>
