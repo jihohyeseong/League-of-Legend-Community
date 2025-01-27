@@ -39,9 +39,10 @@ public class CommunityService {
     public CommunityDto getCommunity(Long id) {
 
         Community community = communityRepository.findById(id).orElse(null);
-        if(community != null)
+        if(community != null) {
             community.setViewsCount(community.getViewsCount() + 1L);
-
+            communityRepository.save(community);
+        }
         return Community.toDto(community);
     }
 
