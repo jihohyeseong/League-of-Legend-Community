@@ -55,6 +55,7 @@ const GlobalStyle = createGlobalStyle`
     }
     * {
       box-sizing: border-box;
+      transition: all 0.15s;
     }
     body {
       font-family: 'Source Sans Pro', sans-serif;
