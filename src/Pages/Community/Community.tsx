@@ -106,6 +106,9 @@ const CommentItem = styled.li`
     border: 1px solid ${(props) => props.theme.textColor};
     border-radius: 3rem;
     padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
 `;
 
 const InputBox = styled.input`
@@ -113,8 +116,73 @@ const InputBox = styled.input`
     border-radius: 3rem;
     border: 1px solid ${(props) => props.theme.textColor};
     background-color: ${(props) => props.theme.bgColor};
-    color:${(props) => props.theme.textColor};
+    color: ${(props) => props.theme.textColor};
 `;
+
+const InputContainer = styled.div`
+    display: flex;
+    gap: 1rem;
+`;
+
+const InputBtn = styled.button`
+    border: 1px solid ${(props) => props.theme.textColor};
+    background-color: ${(props) => props.theme.textColor};
+    color: ${(props) => props.theme.bgColor};
+    display: inline-block;
+    border-radius: 3rem;
+    padding: 1rem;
+`;
+
+const BtnBox = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+`;
+
+const EditBtn2 = styled.button`
+    border: 1px solid green;
+    color: ${(props) => props.theme.textColor};
+    border-radius: 3rem;
+    padding: 0.5rem;
+    background-color: green;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: ${(props) => props.theme.bgColor};
+        border: 1px solid ${(props) => props.theme.bgColor};
+    }
+`;
+
+const DeleteBtn2 = styled.button`
+    border: 1px solid crimson;
+    color: ${(props) => props.theme.textColor};
+    border-radius: 3rem;
+    padding: 0.5rem;
+    background-color: crimson;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: ${(props) => props.theme.bgColor};
+        border: 1px solid ${(props) => props.theme.bgColor};
+    }
+`;
+
+const CancelBtn = styled.button`
+    border: 1px solid crimson;
+    color: ${(props) => props.theme.textColor};
+    border-radius: 3rem;
+    padding: 0.5rem;
+    background-color: crimson;
+    cursor: pointer;
+    transition: all 0.3s;
+
+    &:hover {
+        background-color: ${(props) => props.theme.bgColor};
+        border: 1px solid ${(props) => props.theme.bgColor};
+    }
+`
 
 function Community() {
     const { communityid } = useParams();
@@ -157,7 +225,7 @@ function Community() {
             const json2 = await response2.json();
             setCommentList(json2);
         })();
-    }, []);
+    }, [communityid]);
 
     const deleteCommunity = async (
         event: React.MouseEvent<HTMLButtonElement>
@@ -218,7 +286,7 @@ function Community() {
         setEditCommentContent(comment.content);
     };
 
-    const updateComment = async (e: React.FormEvent<HTMLFormElement>) => {
+    const updateComment = async (e: React.FormEvent<HTMLButtonElement>) => {
         e.preventDefault();
         await fetch(`http://localhost:8080/${editCommentId}/comment`, {
             method: "PATCH",
@@ -232,6 +300,11 @@ function Community() {
         setEditCommentContent("");
         window.location.reload();
     };
+
+    const cancelComment = (e: React.FormEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        window.location.reload();
+    }
 
     return (
         <Wrapper>
@@ -259,46 +332,46 @@ function Community() {
                                     <CommentItem>
                                         {comment.nickname} :
                                         {editCommentId === comment.id ? (
-                                            <form onSubmit={updateComment}>
-                                                <div>
-                                                    <InputBox
-                                                        value={
-                                                            editCommentContent
-                                                        }
-                                                        onChange={(e) =>
-                                                            setEditCommentContent(
-                                                                e.target.value
-                                                            )
-                                                        }
-                                                    />
-                                                </div>
-
-                                                <button type="submit">
+                                            <BtnBox>
+                                                <InputBox
+                                                    value={editCommentContent}
+                                                    onChange={(e) =>
+                                                        setEditCommentContent(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
+                                                <EditBtn2 onClick={updateComment}>
                                                     수정 완료
-                                                </button>
-                                            </form>
+                                                </EditBtn2>
+                                                <CancelBtn onClick={cancelComment}>
+                                                    취소
+                                                </CancelBtn>
+                                            </BtnBox>
                                         ) : (
                                             <>
                                                 {comment.content}
-                                                <button
-                                                    onClick={() =>
-                                                        editCommentToggle(
-                                                            comment
-                                                        )
-                                                    }
-                                                >
-                                                    수정
-                                                </button>
-                                                <button
-                                                    onClick={(e) =>
-                                                        deleteComment(
-                                                            e,
-                                                            comment.id
-                                                        )
-                                                    }
-                                                >
-                                                    삭제
-                                                </button>
+                                                <BtnBox>
+                                                    <EditBtn2
+                                                        onClick={() =>
+                                                            editCommentToggle(
+                                                                comment
+                                                            )
+                                                        }
+                                                    >
+                                                        수정
+                                                    </EditBtn2>
+                                                    <DeleteBtn2
+                                                        onClick={(e) =>
+                                                            deleteComment(
+                                                                e,
+                                                                comment.id
+                                                            )
+                                                        }
+                                                    >
+                                                        삭제
+                                                    </DeleteBtn2>
+                                                </BtnBox>
                                             </>
                                         )}
                                     </CommentItem>
@@ -307,13 +380,13 @@ function Community() {
                         ))}
 
                         <form onSubmit={postComment}>
-                            <div>
+                            <InputContainer>
                                 <InputBox
                                     placeholder="댓글을 입력하세요"
                                     onChange={onChangeInput}
                                 />
-                                <button>입력</button>
-                            </div>
+                                <InputBtn>입력</InputBtn>
+                            </InputContainer>
                         </form>
                     </CommentBox>
                 </MainContainer>

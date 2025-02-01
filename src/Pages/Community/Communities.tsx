@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import { IContent } from "../../api";
@@ -117,7 +117,6 @@ function Communities() {
                 <WriteList>
                     {communitylist.map((community, index) => (
                         <ListItem key={community.id}>
-                            {/* <Link to={`/community/${community.id}`}> */}
                             <a href={`/community/${community.id}`}>
                                 <InfoContainer>
                                     <InfoTitle>
@@ -128,12 +127,6 @@ function Communities() {
                                         작성일자: {date[index]} / 좋아요: {community.likesCount}
                                     </Info>
                                 </InfoContainer></a>
-                            {/* </Link> */}
-                            {/* <div
-                                dangerouslySetInnerHTML={{
-                                    __html: community.content,
-                                }}
-                            /> */}
                         </ListItem>
                     ))}
                 </WriteList>
