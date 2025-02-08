@@ -10,6 +10,7 @@ import Home from "./Pages/Home";
 import App from "./App";
 import ErrorPage from "./Pages/ErrorPage";
 import ErrorComponent from "./Components/ErrorComponent";
+import EditNickName from "./Pages/EditNickName";
 
 const Router = createBrowserRouter([
   {
@@ -24,6 +25,11 @@ const Router = createBrowserRouter([
       {
         path: "mypage",
         element: <MyPage />,
+        errorElement: <ErrorComponent />,
+      },
+      {
+        path:"mypage/edit",
+        element:<EditNickName />,
         errorElement: <ErrorComponent />,
       },
       {

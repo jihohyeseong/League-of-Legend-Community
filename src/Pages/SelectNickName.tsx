@@ -6,105 +6,109 @@ import { useNavigate } from "react-router-dom";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 100%;
-`;
-
-const Container = styled.div`
-  flex: 1 0 auto;
-  display: grid;
-  box-sizing: border-box;
   align-items: center;
-  justify-content: center;
-  justify-items: center;
-`;
-
-const MainContainer = styled(Container)`
-  min-height: 0;
-  column-gap: 160px;
-  padding-top: 60px;
-  width: 100%;
 `;
 
 const Title = styled.span`
-  font-size: 25px;
-  grid-column: 1 / -1; // Title을 두 열을 사용하도록 설정
-  text-align: center; /* 중앙 정렬 */
-  margin-top: 20px;
-  margin-bottom: 30px;
+  font-size: 2rem;
+  margin-top: 5rem;
+`;
+
+const FormWrapper = styled.form`
+  display:flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const InputWrapper = styled.div`
-  position: relative;
-  margin-bottom: 25px;
-  width: 320px;
-  box-sizing: content-box;
+  margin-top: 3rem;
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid ${(props) => props.theme.textColor};
+  padding: 1.5rem;
+  border-radius: 2rem;
+`;
+
+const ImgSelectWrapper = styled.div`
+  margin-top: 3rem;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid ${(props) => props.theme.textColor};
+  padding: 1.5rem;
+  height: 15rem;
+  border-radius: 2rem;
+`
+
+const CheckInput = styled.div`
+  display:flex;
+  align-items: center;
+  gap: 2rem;
+`;
+
+const Message = styled.h2`
+  color: ${(props) => props.theme.textColor};
 `;
 
 const UsernameInput = styled.input`
-  background-color: #fff;
-  border: 1px solid #c2c8d0;
-  border-radius: 6px;
-  box-sizing: border-box;
-  color: #2d333a;
-  font-family: inherit;
-  font-size: 16px;
-  height: 52px;
-  line-height: 1.1;
-  outline: none;
-  padding-block: 1px;
-  padding-inline: 2px;
-  padding: 0 16px;
-  transition: box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
-  width: 100%;
-  text-rendering: auto;
-  letter-spacing: normal;
-  word-spacing: normal;
-  text-transform: none;
-  text-indent: 0;
-  text-shadow: none;
-  display: inline-block;
-  text-align: start;
-  margin: 0;
-  margin-bottom: 5px;
+  height: 2.5rem;
+  width: 15rem;
+  padding: 1rem;
+  border-radius: 2rem;
+  border: 1px solid ${(props) => props.theme.textColor};
+  background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.textColor};
 `;
 
 const Btn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  height: 52px;
-  width: 200px;
-  background-color: #6e24ed;
+  height: 3.5rem;
+  width: 17rem;
+  background-color: #10a37f;
   color: #fff;
-  border-radius: 10px;
-  margin-top: 10px;
-  margin-left: 70px;
+  margin: 1.5rem;
+  border-radius: 0.7rem;
+  padding: 2rem;
+  font-size: 1.2rem;
+  border: 1px solid #10a37f;
+  cursor: pointer;
+`;
+
+const DupBtn = styled(Btn)`
+  width: 7rem;
+  height: 2rem;
+  padding: 1.3rem;
+  font-size: 1rem;
 `;
 
 const LogImg = styled.img`
-  width: 100px;
-  height: 100px;
+  width: 10rem;
+  height: 10rem;
+  object-fit: contain;
 `;
+
+const SelectImg = styled.select`
+  border: 1px solid ${(props) => props.theme.textColor};
+  background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.textColor};
+  padding: 0.5rem;
+  border-radius: 2rem;
+`
 
 function SelectNickName() {
   const navigate = useNavigate();
   const [nickname, setNickname] = useState("");
+  const [msg, setMsg] = useState("");
   const [teamImg, setTeamImg] = useState<ITeamImage[]>([]);
   const [myTeam, setMyTeam] = useState<ITeamImage | null>(null);
   const [myteamId, setMyteamId] = useState<string>("");
 
-  const onChangeInput = (event: React.FormEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    const {
-      currentTarget: { value },
-    } = event;
-    setNickname(value);
-  };
-
   const selectId = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setMyteamId(e.currentTarget.value);
+    setMyteamId(e.target.value);
   };
 
   useEffect(() => {
@@ -149,35 +153,47 @@ function SelectNickName() {
     }
   };
 
+  const checkDuplicate = async () => {
+    const response = await fetch(`http://localhost:8080/check/${nickname}`, { credentials: "include", });
+    const data = await response.json();
+    setMsg(data.message);
+  }
+
   return (
     <Wrapper>
-      <MainContainer>
-        <Title>Select Your Nickname</Title>
-        <form onSubmit={writeNickname}>
-          <InputWrapper>
+      <Title>Select Your Nickname</Title>
+      <FormWrapper onSubmit={writeNickname}>
+        <InputWrapper>
+          <CheckInput>
             <UsernameInput
               placeholder="Please Write Your Nickname"
-              onChange={onChangeInput}
-            ></UsernameInput>
-            <div>
-              <select onChange={selectId}>
-                <option value="">좋아하는 팀 선택</option>
-                {[...teamImg].map((img) => (
-                  <option key={img.id} value={img.id}>
-                    {img.team}
-                  </option>
-                ))}
-              </select>
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+            />
+            <DupBtn type="button" onClick={checkDuplicate}>중복체크</DupBtn>
+          </CheckInput>
 
-              {myTeam && (
-                <LogImg src={myTeam.imageUrl} alt="팀 로고 이미지 없음" />
-              )}
-            </div>
-            <Btn>등록하기</Btn>
-          </InputWrapper>
-        </form>
-      </MainContainer>
-    </Wrapper>
+          <Message>{msg}</Message>
+        </InputWrapper>
+
+        <ImgSelectWrapper>
+          <CheckInput>
+            <SelectImg onChange={selectId}>
+              <option value="">좋아하는 팀 선택</option>
+              {[...teamImg].map((img) => (
+                <option key={img.id} value={img.id}>
+                  {img.team}
+                </option>
+              ))}
+            </SelectImg>
+            {myTeam && (
+              <LogImg src={myTeam.imageUrl} />
+            )}
+          </CheckInput>
+        </ImgSelectWrapper>
+        <Btn type="submit">등록하기</Btn>
+      </FormWrapper>
+    </Wrapper >
   );
 }
 

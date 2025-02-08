@@ -81,13 +81,6 @@ export interface IComment {
   hatesCount: number;
 }
 
-export function loadUser() {
-  return fetch(`http://localhost:8080/mypage`, {
-    method: "GET",
-    credentials: "include",
-  }).then((response) => response.json());
-}
-
 export function postUserInfo(nickname: string) {
   return fetch(`http://localhost:8080/info`, {
     method: "POST",
@@ -97,13 +90,6 @@ export function postUserInfo(nickname: string) {
     body: JSON.stringify({ nickname }),
     credentials: "include",
   });
-}
-
-export function getUserInfo() {
-  return fetch(`http://localhost:8080/info`, {
-    method: "GET",
-    credentials: "include",
-  }).then((response) => response.json());
 }
 
 export function getCheckDuplicate(nickname: string) {

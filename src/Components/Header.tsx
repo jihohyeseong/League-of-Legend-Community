@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const Gnb = styled.nav`
   padding: 1rem;
-  background-color: #333;
+  background-color: #444;
 `;
 
 const Itemlist = styled.ul`
@@ -49,8 +49,9 @@ function Header() {
       <Itemlist>
         <Item><Link to="/">HOME</Link></Item>
         {isLogin ? <Item><Link to="/login">LOG IN</Link></Item> : <Item><Link to="/mypage">MY PAGE</Link></Item>}
-        {isDark ? <ImgBox><Img src="https://cdn-icons-png.flaticon.com/512/6360/6360844.png" onClick={toggleDarkAtom} /></ImgBox> :
-          <ImgBox><Img src="https://cdn-icons-png.flaticon.com/512/6714/6714978.png" onClick={toggleDarkAtom} /></ImgBox>}
+        <ImgBox key={isDark ? 'dark' : 'light'}>
+          <Img src={isDark ? "https://cdn-icons-png.flaticon.com/512/6360/6360844.png" : "https://cdn-icons-png.flaticon.com/512/6714/6714978.png"} onClick={toggleDarkAtom} />
+        </ImgBox>
       </Itemlist>
     </Gnb >
   );

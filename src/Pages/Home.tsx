@@ -94,8 +94,7 @@ const Card = styled.div`
 `;
 
 function Home() {
-    const { isLoading: LoadingCommunity, data: Community } =
-        useQuery<ICommunity>("community", getCommunityList);
+    const { isLoading: LoadingCommunity, data: Community } = useQuery<ICommunity>("community", getCommunityList);
 
     return (
         <Wrapper>

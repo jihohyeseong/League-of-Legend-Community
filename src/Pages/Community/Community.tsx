@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { IComment, IContent } from "../../api";
+import { IComment, IContent, UserInfo } from "../../api";
 
 const Wrapper = styled.div``;
 
@@ -15,7 +15,6 @@ const MainContainer = styled.div`
 const Title = styled.h2`
     font-size: 3rem;
     text-align: center;
-    margin-top: 5rem;
 `;
 
 const Header = styled.div`
@@ -182,7 +181,30 @@ const CancelBtn = styled.button`
         background-color: ${(props) => props.theme.bgColor};
         border: 1px solid ${(props) => props.theme.bgColor};
     }
-`
+`;
+
+const PreviousBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #10a37f;
+  color: #fff;
+  border-radius: 0.7rem;
+  font-size: 1.2rem;
+  border: 1px solid #10a37f;
+  cursor: pointer;
+  &:hover {
+    color: #333;
+  }
+`;
+
+const TitleBox = styled.div`
+  margin-top: 5rem;
+  display  : flex;
+  flex-direction: row-reverse;
+  gap: 2rem;
+`;
 
 function Community() {
     const { communityid } = useParams();
@@ -192,6 +214,7 @@ function Community() {
     const [editCommentId, setEditCommentId] = useState<number | null>(null); // 수정할 댓글 ID
     const [editCommentContent, setEditCommentContent] = useState(""); // 수정할 댓글 내용
     const [date, setDate] = useState<string>("");
+    const [userInfo, setUserInfo] = useState<UserInfo>();
 
     const navigate = useNavigate();
 
@@ -206,6 +229,7 @@ function Community() {
             );
             const json = await response.json();
             setContent(json);
+            console.log(json);
             let result = "";
             const dateString = json.createdAt;
             const [date, timeWithMs] = dateString.split("T");
@@ -224,7 +248,15 @@ function Community() {
             );
             const json2 = await response2.json();
             setCommentList(json2);
+            console.log(json2)
         })();
+
+        (async () => {
+            const response = await fetch(`http://localhost:8080/info`, { credentials: "include" });
+            const data = await response.json();
+            setUserInfo(data);
+        })();
+
     }, [communityid]);
 
     const deleteCommunity = async (
@@ -301,24 +333,30 @@ function Community() {
         window.location.reload();
     };
 
-    const cancelComment = (e: React.FormEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    const cancelComment = () => {
         window.location.reload();
-    }
+    };
 
     return (
         <Wrapper>
             {content && (
                 <MainContainer key={content.id}>
-                    <Title>{content.title}</Title>
+                    <TitleBox>
+                        <Title>{content.title}</Title>
+                        <PreviousBtn onClick={() => navigate(-1)}>←</PreviousBtn>
+                    </TitleBox>
                     <Header>
                         <NickName>{content.nickname}</NickName>
                         <Date>{date}</Date>
-                        <Link to="edit">
-                            <EditBtn>Edit</EditBtn>
-                        </Link>
+                        {content.nickname === userInfo?.nickname &&
+                            <>
+                                <Link to="edit">
+                                    <EditBtn>Edit</EditBtn>
+                                </Link>
 
-                        <DeleteBtn onClick={deleteCommunity}>Delete</DeleteBtn>
+                                <DeleteBtn onClick={deleteCommunity}>Delete</DeleteBtn>
+                            </>
+                        }
                     </Header>
                     <Dynamiccontent
                         dangerouslySetInnerHTML={{
@@ -351,27 +389,31 @@ function Community() {
                                         ) : (
                                             <>
                                                 {comment.content}
-                                                <BtnBox>
-                                                    <EditBtn2
-                                                        onClick={() =>
-                                                            editCommentToggle(
-                                                                comment
-                                                            )
-                                                        }
-                                                    >
-                                                        수정
-                                                    </EditBtn2>
-                                                    <DeleteBtn2
-                                                        onClick={(e) =>
-                                                            deleteComment(
-                                                                e,
-                                                                comment.id
-                                                            )
-                                                        }
-                                                    >
-                                                        삭제
-                                                    </DeleteBtn2>
-                                                </BtnBox>
+                                                {comment.nickname === userInfo?.nickname &&
+                                                    <>
+                                                        <BtnBox>
+                                                            <EditBtn2
+                                                                onClick={() =>
+                                                                    editCommentToggle(
+                                                                        comment
+                                                                    )
+                                                                }
+                                                            >
+                                                                수정
+                                                            </EditBtn2>
+                                                            <DeleteBtn2
+                                                                onClick={(e) =>
+                                                                    deleteComment(
+                                                                        e,
+                                                                        comment.id
+                                                                    )
+                                                                }
+                                                            >
+                                                                삭제
+                                                            </DeleteBtn2>
+                                                        </BtnBox>
+                                                    </>
+                                                }
                                             </>
                                         )}
                                     </CommentItem>

@@ -1,90 +1,110 @@
-import { useQuery } from "react-query";
 import styled from "styled-components";
-import {
-  getTeamImage,
-  getUserInfo,
-  ITeamImage,
-  loadUser,
-  User,
-  UserInfo,
-} from "../api";
-import { useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { isLoginAtom } from "../atom";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { User, UserInfo } from "../api";
+import useFetch from "../Hooks/useFetch";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  min-height: 100%;
+  align-items: center;
+`;
+
+const Title = styled.h2`
+  font-size: 2rem;
+  margin-top: 5rem;
 `;
 
 const Container = styled.div`
-  flex: 1 0 auto;
-  /* display: grid; */
-  box-sizing: border-box;
-  align-items: center;
-  justify-content: center;
-  justify-items: center;
-  margin-bottom: 20px;
+margin-top: 3rem;
+  display: flex;
+  gap: 3rem;
 `;
 
-const MainContainer = styled(Container)`
-  min-height: 0;
-  column-gap: 160px;
-  padding-top: 60px;
-  width: 100%;
+const InfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5rem;
+  gap: 1.5rem;
+  padding: 3rem;
+  border-radius: 3rem;
+  border: 1px solid ${(props) => props.theme.textColor};
 `;
 
-const MyName = styled.span`
-  font-size: 30px;
-  margin-right: 30px;
+const Info = styled.span`
+    font-size: 1.5rem;
+    text-align: center;
 `;
 
-const MyInfo = styled.span`
-  font-size: 20px;
-  margin-top: 10px;
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 3rem;
 `;
 
 const LogoutButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  height: 52px;
-  width: 320px;
+  height: 3.5rem;
+  width: 17rem;
   background-color: #10a37f;
   color: #fff;
-  margin: 24px 0 0;
-  border-radius: 6px;
-  padding: 4px 16px;
-  font: inherit;
-  border-width: 0;
+  margin: 1.5rem;
+  border-radius: 0.7rem;
+  padding: 2rem;
+  font-size: 1.2rem;
+  border: 1px solid #10a37f;
   cursor: pointer;
 `;
-const Img = styled.img`
-  width: 40px;
-  height: 40px;
-  margin-top: 20px;
+
+const ImgBox = styled.div`
+  padding: 3rem;
+  border-radius: 3rem;
+  border: 1px solid ${(props) => props.theme.textColor};
 `;
 
-const LogImg = styled.img`
-  width: 100px;
-  height: 100px;
+const ImgItem = styled.img`
+  width: 20rem;
+  height: 10rem;
+  object-fit: contain;
+`;
+
+const DeleteButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  width: 17rem;
+  background-color: crimson;
+  color: #fff;
+  border-radius: 0.7rem;
+  padding: 2rem;
+  font-size: 1.2rem;
+  border: 1px solid crimson;
+  cursor: pointer;
 `;
 
 function MyPage() {
   const navigate = useNavigate();
-  const { isLoading: LoadingUser, data: User } = useQuery<User>(
-    "user",
-    loadUser
-  );
+  const [user, setUser] = useState<User>();
+  const [userInfo, setUserInfo] = useState<UserInfo>();
+  let isLogin = useRecoilValue(isLoginAtom);
 
-  const { isLoading: LoadingUserInfo, data: UserInfo } = useQuery<UserInfo>(
-    "userinfo",
-    getUserInfo
-  );
+  const { data: userData, loading: userLoading } = useFetch("http://localhost:8080/mypage");
+  const { data: userInfoData, loading: userInfoLoading } = useFetch("http://localhost:8080/info");
+
+
+  useEffect(() => {
+    if (userData) {
+      setUser(userData);
+    }
+
+    if (userInfoData) {
+      setUserInfo(userInfoData);
+    }
+  }, [userData, userInfoData]);
 
   const setLogin = useSetRecoilState(isLoginAtom);
   const toggleLoginAtom = () => {
@@ -104,53 +124,52 @@ function MyPage() {
     navigate("/login/nickname");
   };
 
+  const handleDelete = async () => {
+    await fetch(`http://localhost:8080/info`, {
+      method: "DELETE",
+      credentials: "include",
+    });
+    alert("탈퇴가 완료되었습니다.");
+    navigate("/login");
+    isLogin = false;
+  };
+
+  const gotoEdit = () => {
+    navigate("/mypage/edit");
+  };
+
   return (
     <Wrapper>
-      <MainContainer>
-        {LoadingUser && LoadingUserInfo ? (
-          <Container>Loading...</Container>
-        ) : (
-          <MainContainer>
-            {Array.isArray(User) ? (
-              User.map((user) => (
-                <Container key={user.id}>
-                  <MyName>{user.name}'s Mypage</MyName>
-                  <MyInfo>Email: {user.email}</MyInfo>
-                </Container>
-              ))
-            ) : (
-              <Container>
-                <MyName>{User?.name}'s Mypage</MyName>
-                <MyInfo>Email: {User?.email}</MyInfo>
-              </Container>
-            )}
-            {Array.isArray(UserInfo) ? (
-              UserInfo.map((userinfo) => (
-                <Container key={userinfo.id}>
-                  <MyName>{userinfo.nickname}</MyName>
-                  <MyInfo>{userinfo.point}</MyInfo>
-                  <MyInfo>{userinfo.exp}</MyInfo>
-                  <MyInfo>{userinfo.level}</MyInfo>
-                  <LogImg src={userinfo.imageUrl} />
-                </Container>
-              ))
-            ) : (
-              <Container>
-                <MyName>{UserInfo?.nickname}</MyName>
-                <Img src="https://cdn-icons-png.flaticon.com/512/4291/4291393.png" />
-                <MyInfo>{UserInfo?.point}</MyInfo>
-                <Img src="https://cdn-icons-png.flaticon.com/256/8078/8078485.png" />
-                <MyInfo>{UserInfo?.exp}</MyInfo>
-                <Img src="https://cdn-icons-png.flaticon.com/512/7965/7965741.png" />
-                <MyInfo>{UserInfo?.level}</MyInfo>
-                <LogImg src={UserInfo?.imageUrl} alt="프로필 없음"/>
-              </Container>
-            )}
-            <LogoutButton onClick={gotoUserInfo}>Goto Nickname</LogoutButton>
-            <LogoutButton onClick={handleLogout}>Log Out</LogoutButton>
-          </MainContainer>
-        )}
-      </MainContainer>
+      <Title>{user?.name}'s My Page</Title>
+      <Container>
+        <InfoBox>
+          <Info>이메일 : {user?.email}</Info>
+          {userInfo &&
+            <>
+              <Info>닉네임 : {userInfo?.nickname}</Info>
+              <Info>포인트 : {userInfo?.point}</Info>
+              <Info>레벨 : {userInfo?.level} / 경험치 : {userInfo?.exp}</Info>
+            </>
+          }
+        </InfoBox>
+        {userInfo &&
+          <>
+            <ImgBox>
+              <ImgItem src={userInfo?.imageUrl} />
+            </ImgBox>
+          </>
+        }
+
+      </Container>
+
+      <ButtonContainer>
+        {!userInfo && <LogoutButton onClick={gotoUserInfo}>Goto Nickname</LogoutButton>}
+        <LogoutButton onClick={handleLogout}>Log Out</LogoutButton>
+        {userInfo && <LogoutButton onClick={gotoEdit}>수정하기</LogoutButton>}
+      </ButtonContainer>
+
+      {(user || userInfo) && <DeleteButton onClick={handleDelete}>탈퇴하기</DeleteButton>}
+
     </Wrapper>
   );
 }

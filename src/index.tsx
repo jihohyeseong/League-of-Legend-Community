@@ -84,6 +84,7 @@ const Root: React.FC = () => {
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <RecoilRoot>
     <QueryClientProvider client={Client}>
