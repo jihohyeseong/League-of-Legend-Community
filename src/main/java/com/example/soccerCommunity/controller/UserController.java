@@ -57,6 +57,29 @@ public class UserController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    @PatchMapping("/info")
+    public ResponseEntity<UserInfoDto> patchInfo(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+                                                 @RequestBody UserInfoDto userInfoDto){
+
+        String username = customOAuth2User.getUsername();
+        UserInfoDto dto = userService.patchDetailInfo(username, userInfoDto);
+
+        return (dto != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(dto) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @DeleteMapping("/info")
+    public ResponseEntity<UserInfoDto> deleteInfo(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
+
+        String username = customOAuth2User.getUsername();
+        UserInfoDto dto = userService.deleteDetailInfo(username);
+
+        return (dto != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(dto) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
     @GetMapping("/check/{nickname}")
     public ResponseEntity<Map<String, Object>> checkNickname(@PathVariable String nickname){
 

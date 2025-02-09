@@ -5,6 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 
 public interface CommunityRepository extends JpaRepository<Community, Long> {
 
@@ -14,4 +16,6 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
     Page<Community> findByLikesCountGreaterThanEqual(Long likesCount, Pageable pageable);
 
     Page<Community> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+
+    List<Community> findByNickname(String nickname);
 }

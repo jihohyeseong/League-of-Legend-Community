@@ -3,12 +3,15 @@ package com.example.soccerCommunity.service;
 import com.example.soccerCommunity.dto.CustomOAuth2User;
 import com.example.soccerCommunity.dto.UserDto;
 import com.example.soccerCommunity.dto.UserInfoDto;
+import com.example.soccerCommunity.entity.Comment;
+import com.example.soccerCommunity.entity.Community;
 import com.example.soccerCommunity.entity.User;
 import com.example.soccerCommunity.entity.UserInfo;
-import com.example.soccerCommunity.repository.UserInfoRepository;
-import com.example.soccerCommunity.repository.UserRepository;
+import com.example.soccerCommunity.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -16,10 +19,21 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserInfoRepository userInfoRepository;
 
-    public UserService(UserRepository userRepository, UserInfoRepository userInfoRepository){
+    private final CommentRepository commentRepository;
+
+    private final CommunityRepository communityRepository;
+
+    private final CommunityLikesRepository communityLikesRepository;
+
+    public UserService(UserRepository userRepository, UserInfoRepository userInfoRepository,
+                       CommentRepository commentRepository, CommunityRepository communityRepository,
+                       CommunityLikesRepository communityLikesRepository){
 
         this.userRepository = userRepository;
         this.userInfoRepository = userInfoRepository;
+        this.commentRepository = commentRepository;
+        this.communityRepository = communityRepository;
+        this.communityLikesRepository = communityLikesRepository;
     }
 
 
@@ -52,4 +66,60 @@ public class UserService {
 
         return !userInfoRepository.existsByNickname(nickname);
     }
+
+    @Transactional
+    public UserInfoDto patchDetailInfo(String username, UserInfoDto userInfoDto) {
+
+        UserInfo userInfo = userInfoRepository.findByUser_Username(username);
+        String oldNickname = userInfo.getNickname();
+        String newNickname = userInfoDto.getNickname();
+
+        List<Comment> comments = commentRepository.findByNickname(oldNickname);
+        for(Comment comment : comments){
+            comment.setNickname(newNickname);
+        }
+        commentRepository.saveAll(comments);
+
+        List<Community> communities = communityRepository.findByNickname(oldNickname);
+        for(Community community : communities){
+            community.setNickname(newNickname);
+        }
+        communityRepository.saveAll(communities);
+
+        userInfo.setNickname(newNickname);
+        UserInfo patched = userInfoRepository.save(userInfo);
+
+        return UserInfo.toDto(patched);
+    }
+
+    @Transactional
+    public UserInfoDto deleteDetailInfo(String username) {
+
+        UserInfo userInfo = userInfoRepository.findByUser_Username(username);
+        User user = userRepository.findByUsername(username);
+        String nickname = userInfo.getNickname();
+
+        // 1. 유저가 작성한 모든 커뮤니티 게시글 ID 가져오기
+        List<Long> communityIds = communityRepository.findByNickname(nickname)
+                .stream()
+                .map(Community::getId)
+                .toList();
+
+        // 2. 좋아요(CommunityLikes) 데이터 먼저 삭제
+        communityLikesRepository.deleteByCommunity_IdIn(communityIds);
+
+        // 3. 해당 커뮤니티 ID를 참조하는 모든 댓글 삭제
+        List<Comment> comments = commentRepository.findByCommunity_IdIn(communityIds);
+        commentRepository.deleteAll(comments);
+
+        // 4. 유저가 작성한 커뮤니티 게시글 삭제
+        List<Community> communities = communityRepository.findByNickname(nickname);
+        communityRepository.deleteAll(communities);
+
+        userInfoRepository.delete(userInfo);
+        userRepository.delete(user);
+
+        return UserInfo.toDto(userInfo);
+    }
+
 }
