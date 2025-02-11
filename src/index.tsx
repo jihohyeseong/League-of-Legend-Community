@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { isDarkAtom } from "./atom";
 import { RouterProvider } from "react-router-dom";
 import Router from "./Router";
+import { CookiesProvider } from "react-cookie";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
@@ -86,9 +87,11 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
+  // <CookiesProvider>
   <RecoilRoot>
     <QueryClientProvider client={Client}>
       <Root />
     </QueryClientProvider>
   </RecoilRoot>
+  // </CookiesProvider>
 );

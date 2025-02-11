@@ -33,43 +33,48 @@ const CreateBtn = styled.button`
     width: 10rem;
     background-color: ${(props) => props.theme.textColor};
     color: ${(props) => props.theme.bgColor};
+    border: 1px solid ${(props) => props.theme.textColor};
     border-radius: 2rem;
     cursor: pointer;
-    transition: background-color 0.5s ease-in;
+    transition: background-color 0.3s ease-in;
 
     &:hover {
         background-color: crimson;
     }
 `;
 
-const WriteList = styled.ul`
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    list-style-type: none;
-`;
-
-const ListItem = styled.li`
-    background-color: ${(props) => props.theme.bgColor};
-    border: 1px solid ${(props) => props.theme.textColor};
+const TableBox = styled.table`
     padding: 3rem;
-    border-radius: 2rem;
+    border: 1px solid ${(props) => props.theme.textColor};
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.3rem;
+    width: 100rem;
+`;
+
+const TableHead = styled.tr`
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid lightgray; 
+    font-size: 1.4rem;
+    padding: 1rem;
+`;
+
+const TableBody = styled.tr`
+    font-size: 1.2rem;
+    padding: 1rem;
+    transition: color 0.3s;
+
     &:hover {
-        background-color: crimson;
+        color: ${(props) => props.theme.boxTextColor};
     }
 `;
 
-const InfoContainer = styled.div`
+const TableLink = styled.a`
     display: flex;
-    flex-direction: column;
-    gap: 1rem;
-`;
-
-const InfoTitle = styled.div`
-    display: flex;
-`;
-const Info = styled.div`
-    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 function Communities() {
@@ -92,6 +97,7 @@ function Communities() {
                     }
                 );
                 const json = await response.json();
+                console.log(json);
                 setCommunitylist(json.content);
                 const result = [];
                 for (let i = 0; i < json.content.length; i++) {
@@ -114,22 +120,22 @@ function Communities() {
                     <Title>Community</Title>
                     <CreateBtn onClick={newWrite}>글쓰기</CreateBtn>
                 </MainContainerHeader>
-                <WriteList>
-                    {communitylist.map((community, index) => (
-                        <ListItem key={community.id}>
-                            <a href={`/community/${community.id}`}>
-                                <InfoContainer>
-                                    <InfoTitle>
-                                        {community.title} -{community.nickname}-
-                                    </InfoTitle>
-
-                                    <Info>
-                                        작성일자: {date[index]} / 좋아요: {community.likesCount}
-                                    </Info>
-                                </InfoContainer></a>
-                        </ListItem>
+                <TableBox>
+                    <TableHead>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                    </TableHead>
+                    {communitylist && communitylist.slice(0, 20).map((community, index) => (
+                        <TableBody>
+                            <TableLink href={`/community/${community.id}`}>
+                                <td>{communitylist.length - index}</td>
+                                <td>{community.title}</td>
+                                <td>{community.nickname}</td>
+                            </TableLink>
+                        </TableBody>
                     ))}
-                </WriteList>
+                </TableBox>
             </MainContainer>
         </Wrapper>
     );

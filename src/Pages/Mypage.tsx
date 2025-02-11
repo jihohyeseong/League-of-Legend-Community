@@ -168,7 +168,7 @@ function MyPage() {
         {userInfo && <LogoutButton onClick={gotoEdit}>수정하기</LogoutButton>}
       </ButtonContainer>
 
-      {(user || userInfo) && <DeleteButton onClick={handleDelete}>탈퇴하기</DeleteButton>}
+      {(user && userInfo) && <DeleteButton onClick={handleDelete}>탈퇴하기</DeleteButton>}
 
     </Wrapper>
   );

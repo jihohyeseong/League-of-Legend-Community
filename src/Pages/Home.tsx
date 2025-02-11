@@ -45,7 +45,7 @@ const Title = styled.span`
 
 const Box = styled.div`
     text-align: center;
-    border-radius: 1.5rem;
+    border-radius: 1rem;
     padding: 3rem;
     background-color: ${(props) => props.theme.textColor};
     color: ${(props) => props.theme.bgColor};
@@ -59,7 +59,9 @@ const BoxTitle = styled.h2`
     display: inline-block;
     font-size: 2rem;
     text-align: center;
+    margin-bottom: 1rem;
     transition: color 0.5s;
+
     &:hover {
         color: lightblue;
     }
@@ -73,15 +75,9 @@ const CommunityList = styled.ul`
     text-align: center;
 `;
 
-const ListTitle = styled.div`
-    display: flex;
-    justify-content: space-around;
-    font-size: 1.7rem;
-`;
-
 const ListItem = styled.li`
     font-size: 1.5rem;
-    border-radius: 3rem;
+    border-radius: 1rem;
     border: 1px solid ${(props) => props.theme.bgColor}; /* 테두리 추가 */
     background-color: ${(props) => props.theme.textColor}; /* 배경색 추가 */
 `;
@@ -111,10 +107,6 @@ function Home() {
                         </Loading>
                     ) : (
                         <CommunityList>
-                            <ListTitle>
-                                <span>제목</span>
-                                <span>이름</span>
-                            </ListTitle>
                             {Array.isArray(Community?.content) ? (
                                 Community?.content
                                     .slice(0, 3)
@@ -123,7 +115,7 @@ function Home() {
                                             <Card>
                                                 <span>{community.title}</span>
                                                 <span>
-                                                    {community.nickname}
+                                                    -{community.nickname}-
                                                 </span>
                                             </Card>
                                         </ListItem>

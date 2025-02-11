@@ -80,17 +80,20 @@ function Login() {
     const googleOnclick = () => {
         window.location.href =
             "http://localhost:8080/oauth2/authorization/google";
-        toggleLoginAtom();
+        // toggleLoginAtom();
+        setLogin(true); 
     };
     const naverOnclick = () => {
         window.location.href =
             "http://localhost:8080/oauth2/authorization/naver";
-        toggleLoginAtom();
+        // toggleLoginAtom();
+        setLogin(true); 
     };
     const kakaoOnclick = () => {
         window.location.href =
             "http://localhost:8080/oauth2/authorization/kakao";
-        toggleLoginAtom();
+        // toggleLoginAtom();
+        setLogin(true); 
     };
     return (
         <Wrapper>

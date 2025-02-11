@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useFetch from "../Hooks/useFetch";
-import { UserInfo } from "../api";
 import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
@@ -31,17 +30,6 @@ border: 1px solid ${(props) => props.theme.textColor};
 padding: 1.5rem;
 border-radius: 2rem;
 `;
-
-const ImgSelectWrapper = styled.div`
-margin-top: 3rem;
-display:flex;
-justify-content: center;
-align-items: center;
-border: 1px solid ${(props) => props.theme.textColor};
-padding: 1.5rem;
-height: 15rem;
-border-radius: 2rem;
-`
 
 const CheckInput = styled.div`
 display:flex;
@@ -79,11 +67,32 @@ const Btn = styled.button`
   cursor: pointer;
 `;
 
+const GrayBtn = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  width: 17rem;
+  background-color: gray;
+  color: #fff;
+  margin: 1.5rem;
+  border-radius: 0.7rem;
+  padding: 2rem;
+  font-size: 1.2rem;
+  border: 1px solid gray;
+  cursor: pointer;
+`;
+
 const DupBtn = styled(Btn)`
   width: 7rem;
   height: 2rem;
   padding: 1.3rem;
   font-size: 1rem;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 3rem;
 `;
 
 function EditNickName() {
@@ -101,7 +110,9 @@ function EditNickName() {
     const checkDuplicate = async () => {
         const response = await fetch(`http://localhost:8080/check/${nickname}`, { credentials: "include", });
         const data = await response.json();
+        console.log(data);
         setMsg(data.message);
+        return data.available;
     };
 
     const handleEdit = async () => {
@@ -113,6 +124,10 @@ function EditNickName() {
             },
             body: JSON.stringify({ nickname }),
         });
+        navigate(-1);
+    };
+
+    const gotoBack = () => {
         navigate(-1);
     }
 
@@ -131,7 +146,10 @@ function EditNickName() {
                     </CheckInput>
                     <Message>{msg}</Message>
                 </InputWrapper>
-                <Btn type="submit">수정하기</Btn>
+                <ButtonContainer>
+                    <Btn type="submit">수정하기</Btn>
+                    <GrayBtn type="button" onClick={gotoBack}>뒤로가기</GrayBtn>
+                </ButtonContainer>
             </FormWrapper>
         </Wrapper>
     )
