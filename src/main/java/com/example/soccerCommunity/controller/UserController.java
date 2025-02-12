@@ -22,6 +22,17 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/auth/me")
+    public ResponseEntity<Map<String, Object>> getCurrentUser(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+        if (customOAuth2User == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Unauthorized"));
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("username", customOAuth2User.getUsername());
+
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/mypage")
     public ResponseEntity<UserDto> mypage(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
@@ -63,6 +74,18 @@ public class UserController {
 
         String username = customOAuth2User.getUsername();
         UserInfoDto dto = userService.patchDetailInfo(username, userInfoDto);
+
+        return (dto != null) ?
+                ResponseEntity.status(HttpStatus.OK).body(dto) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @PatchMapping("/info/team")
+    public ResponseEntity<UserInfoDto> patchTeamInfo(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+                                                 @RequestBody UserInfoDto userInfoDto){
+
+        String username = customOAuth2User.getUsername();
+        UserInfoDto dto = userService.patchTeamInfo(username, userInfoDto);
 
         return (dto != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(dto) :

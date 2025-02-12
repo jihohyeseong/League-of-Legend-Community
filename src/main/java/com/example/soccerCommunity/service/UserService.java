@@ -3,10 +3,7 @@ package com.example.soccerCommunity.service;
 import com.example.soccerCommunity.dto.CustomOAuth2User;
 import com.example.soccerCommunity.dto.UserDto;
 import com.example.soccerCommunity.dto.UserInfoDto;
-import com.example.soccerCommunity.entity.Comment;
-import com.example.soccerCommunity.entity.Community;
-import com.example.soccerCommunity.entity.User;
-import com.example.soccerCommunity.entity.UserInfo;
+import com.example.soccerCommunity.entity.*;
 import com.example.soccerCommunity.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,6 +77,12 @@ public class UserService {
         }
         commentRepository.saveAll(comments);
 
+        List<CommunityLikes> communityLikes = communityLikesRepository.findByNickname(oldNickname);
+        for(CommunityLikes cl : communityLikes){
+            cl.setNickname(newNickname);
+        }
+        communityLikesRepository.saveAll(communityLikes);
+
         List<Community> communities = communityRepository.findByNickname(oldNickname);
         for(Community community : communities){
             community.setNickname(newNickname);
@@ -87,6 +90,15 @@ public class UserService {
         communityRepository.saveAll(communities);
 
         userInfo.setNickname(newNickname);
+        UserInfo patched = userInfoRepository.save(userInfo);
+
+        return UserInfo.toDto(patched);
+    }
+
+    public UserInfoDto patchTeamInfo(String username, UserInfoDto userInfoDto) {
+
+        UserInfo userInfo = userInfoRepository.findByUser_Username(username);
+        userInfo.setNickname(userInfoDto.getImageUrl());
         UserInfo patched = userInfoRepository.save(userInfo);
 
         return UserInfo.toDto(patched);
