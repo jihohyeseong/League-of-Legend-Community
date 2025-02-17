@@ -92,9 +92,8 @@ function MyPage() {
   const [userInfo, setUserInfo] = useState<UserInfo>();
   let isLogin = useRecoilValue(isLoginAtom);
 
-  const { data: userData, loading: userLoading } = useFetch("http://localhost:8080/mypage");
-  const { data: userInfoData, loading: userInfoLoading } = useFetch("http://localhost:8080/info");
-
+  const { data: userData } = useFetch("http://localhost:8080/mypage");
+  const { data: userInfoData } = useFetch("http://localhost:8080/info");
 
   useEffect(() => {
     if (userData) {
@@ -105,6 +104,8 @@ function MyPage() {
       setUserInfo(userInfoData);
     }
   }, [userData, userInfoData]);
+
+  console.log(userInfo);
 
   const setLogin = useSetRecoilState(isLoginAtom);
   const toggleLoginAtom = () => {
@@ -118,6 +119,7 @@ function MyPage() {
     });
     toggleLoginAtom();
     navigate("/");
+    window.location.reload();
   };
 
   const gotoUserInfo = () => {
@@ -134,9 +136,13 @@ function MyPage() {
     isLogin = false;
   };
 
-  const gotoEdit = () => {
-    navigate("/mypage/edit");
+  const gotoNickNameEdit = () => {
+    navigate("/mypage/edit/nickname");
   };
+
+  const gotoImageEdit = () => {
+    navigate("/mypage/edit/image")
+  }
 
   return (
     <Wrapper>
@@ -165,7 +171,8 @@ function MyPage() {
       <ButtonContainer>
         {!userInfo && <LogoutButton onClick={gotoUserInfo}>Goto Nickname</LogoutButton>}
         <LogoutButton onClick={handleLogout}>Log Out</LogoutButton>
-        {userInfo && <LogoutButton onClick={gotoEdit}>수정하기</LogoutButton>}
+        {userInfo && <LogoutButton onClick={gotoNickNameEdit}>닉네임 수정하기</LogoutButton>}
+        {userInfo && <LogoutButton onClick={gotoImageEdit}>이미지 수정하기</LogoutButton>}
       </ButtonContainer>
 
       {(user && userInfo) && <DeleteButton onClick={handleDelete}>탈퇴하기</DeleteButton>}

@@ -55,7 +55,6 @@ const TableBox = styled.table`
 
 const TableHead = styled.tr`
     display: flex;
-    justify-content: space-between;
     border-bottom: 1px solid lightgray; 
     font-size: 1.4rem;
     padding: 1rem;
@@ -71,9 +70,12 @@ const TableBody = styled.tr`
     }
 `;
 
+const TableBodytd = styled.td`
+    width: 30rem;
+`;
+
 const TableLink = styled.a`
     display: flex;
-    justify-content: space-between;
     align-items: center;
 `;
 
@@ -122,16 +124,18 @@ function Communities() {
                 </MainContainerHeader>
                 <TableBox>
                     <TableHead>
-                        <th>번호</th>
-                        <th>제목</th>
-                        <th>작성자</th>
+                        <TableBodytd>번호</TableBodytd>
+                        <TableBodytd>제목</TableBodytd>
+                        <TableBodytd>작성자</TableBodytd>
+                        <TableBodytd>작성일자</TableBodytd>
                     </TableHead>
                     {communitylist && communitylist.slice(0, 20).map((community, index) => (
                         <TableBody>
                             <TableLink href={`/community/${community.id}`}>
-                                <td>{communitylist.length - index}</td>
-                                <td>{community.title}</td>
-                                <td>{community.nickname}</td>
+                                <TableBodytd>{communitylist.length - index}</TableBodytd>
+                                <TableBodytd>{community.title}</TableBodytd>
+                                <TableBodytd>{community.nickname}</TableBodytd>
+                                <TableBodytd>{date[index]}</TableBodytd>
                             </TableLink>
                         </TableBody>
                     ))}

@@ -55,7 +55,6 @@ function Header() {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         setLogin(true); // 로그인 상태 업데이트
       })
       .catch(() => {

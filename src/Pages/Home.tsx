@@ -1,11 +1,13 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { getCommunityList, ICommunity } from "../api";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 `;
 
 const Loading = styled.div`
@@ -56,15 +58,11 @@ const ALink = styled.a`
 `;
 
 const BoxTitle = styled.h2`
-    display: inline-block;
+    display: flex;
     font-size: 2rem;
-    text-align: center;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1rem;
-    transition: color 0.5s;
-
-    &:hover {
-        color: lightblue;
-    }
 `;
 
 const CommunityList = styled.ul`
@@ -89,8 +87,42 @@ const Card = styled.div`
     border-radius: 3rem;
 `;
 
+const More = styled.span`
+    font-size: 1.3rem;
+    transition: color 0.5s;
+
+    &:hover {
+        color: lightblue;
+    }
+`;
+
+const ChatBtnBox = styled.div`
+    position: absolute;
+    right: 10rem;
+    top: 30rem;
+`;
+
+const ChatBtn = styled.button`
+display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 12rem;
+  background-color: #10a37f;
+  color: #fff;
+  border-radius: 0.7rem;
+  padding: 1.5rem;
+  font-size: 1.2rem;
+  border: 1px solid #10a37f;
+  cursor: pointer;
+`;
+
+
 function Home() {
+    const navigate = useNavigate();
     const { isLoading: LoadingCommunity, data: Community } = useQuery<ICommunity>("community", getCommunityList);
+    const gotoChat = () => {
+        navigate("/chat");
+    }
 
     return (
         <Wrapper>
@@ -98,7 +130,8 @@ function Home() {
                 <Title>Welcome League Of Legend Community</Title>
                 <Box>
                     <BoxTitle>
-                        <ALink href="/community">최근 글</ALink>
+                        최근 글
+                        {Community && <More><ALink href="/community">More...</ALink></More>}
                     </BoxTitle>
 
                     {LoadingCommunity ? (
@@ -109,8 +142,7 @@ function Home() {
                         <CommunityList>
                             {Array.isArray(Community?.content) ? (
                                 Community?.content
-                                    .slice(0, 3)
-                                    .map((community) => (
+                                    .slice(0, 3).map((community) => (
                                         <ListItem key={community.id}>
                                             <Card>
                                                 <span>{community.title}</span>
@@ -129,7 +161,10 @@ function Home() {
                     )}
                 </Box>
             </MainContainer>
-        </Wrapper>
+            <ChatBtnBox>
+                {Community && <ChatBtn onClick={gotoChat}>채팅방 입장</ChatBtn>}
+            </ChatBtnBox>
+        </Wrapper >
     );
 }
 

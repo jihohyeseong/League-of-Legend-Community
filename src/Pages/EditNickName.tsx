@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useFetch from "../Hooks/useFetch";
 import { useNavigate } from "react-router-dom";
+import { ITeamImage } from "../api";
 
 const Wrapper = styled.div`
 display: flex;
@@ -99,13 +100,6 @@ function EditNickName() {
     const [nickname, setNickname] = useState("");
     const [msg, setMsg] = useState("");
     const navigate = useNavigate();
-    const { data: userInfoData, loading: userInfoLoading } = useFetch("http://localhost:8080/info");
-
-    useEffect(() => {
-        if (userInfoData) {
-            setNickname(userInfoData?.nickname);
-        }
-    }, [userInfoData]);
 
     const checkDuplicate = async () => {
         const response = await fetch(`http://localhost:8080/check/${nickname}`, { credentials: "include", });
@@ -127,9 +121,11 @@ function EditNickName() {
         navigate(-1);
     };
 
+    console.log(nickname);
+
     const gotoBack = () => {
         navigate(-1);
-    }
+    };
 
     return (
         <Wrapper>

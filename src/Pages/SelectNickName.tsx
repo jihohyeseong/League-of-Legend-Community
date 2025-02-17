@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { getCheckDuplicate, ITeamImage, postUserInfo } from "../api";
-import { ChangeEvent, useEffect, useState } from "react";
+import { getCheckDuplicate, ITeamImage } from "../api";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
@@ -40,7 +40,7 @@ const ImgSelectWrapper = styled.div`
   padding: 1.5rem;
   height: 15rem;
   border-radius: 2rem;
-`
+`;
 
 const CheckInput = styled.div`
   display:flex;
@@ -97,7 +97,7 @@ const SelectImg = styled.select`
   color: ${(props) => props.theme.textColor};
   padding: 0.5rem;
   border-radius: 2rem;
-`
+`;
 
 function SelectNickName() {
   const navigate = useNavigate();

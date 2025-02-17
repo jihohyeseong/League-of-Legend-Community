@@ -11,6 +11,8 @@ import App from "./App";
 import ErrorPage from "./Pages/ErrorPage";
 import ErrorComponent from "./Components/ErrorComponent";
 import EditNickName from "./Pages/EditNickName";
+import Chat from "./Pages/Chat";
+import EditTeamImage from "./Pages/EditTeamImage";
 
 const Router = createBrowserRouter([
   {
@@ -28,8 +30,13 @@ const Router = createBrowserRouter([
         errorElement: <ErrorComponent />,
       },
       {
-        path:"mypage/edit",
-        element:<EditNickName />,
+        path: "mypage/edit/nickname",
+        element: <EditNickName />,
+        errorElement: <ErrorComponent />,
+      },
+      {
+        path: "mypage/edit/image",
+        element: <EditTeamImage />,
         errorElement: <ErrorComponent />,
       },
       {
@@ -60,6 +67,11 @@ const Router = createBrowserRouter([
       {
         path: "community/:communityid/edit",
         element: <CommunityEdit />,
+        errorElement: <ErrorComponent />,
+      },
+      {
+        path: "chat",
+        element: <Chat />,
         errorElement: <ErrorComponent />,
       },
     ],
