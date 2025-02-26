@@ -100,6 +100,9 @@ const ChatBtnBox = styled.div`
     position: absolute;
     right: 10rem;
     top: 30rem;
+    @media (width < 1280px) {
+        top:50rem;
+    }
 `;
 
 const ChatBtn = styled.button`
