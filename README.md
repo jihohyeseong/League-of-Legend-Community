@@ -30,7 +30,7 @@
 <br/>
 
 ## 새로 적용한 기능
-+ **SPRINGBOOT** : <br>1. 단일 토큰 JWT를 활용한 로그인 방식에서 OAuth2 JWT 토큰을 활용한 네이버, 구글, 카카오 로그인 방식으로 변경<br>2. WebSocket STOMP를 활용한 실시간 채팅 구현<br>3. AWS S3를 활용하여 이미지 업로드 개선
++ **SPRINGBOOT** : <br>1. 단일 토큰 JWT를 활용한 로그인 방식에서 OAuth2 JWT 토큰을 활용한 네이버, 구글, 카카오 로그인 방식으로 변경<br>2. WebSocket STOMP를 활용한 실시간 채팅 구현<br>3. AWS S3를 활용하여 이미지 업로드 개선<br>4. 페이징 처리 객체 활용
 + **REACT** : 
 <br/>
 <br/>
