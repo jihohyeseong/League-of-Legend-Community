@@ -25,7 +25,7 @@
 
 ## 개발자소개
 + **이혜성**: Backend Spring담당
-+ **송승엽**: 반응형 React담당 [🖥️[PC화면 시연동영상](유튜브url넣기))]
++ **송승엽**: 반응형 React담당 [🖥️[PC화면 시연동영상](https://youtu.be/QQ5dcAEaIls))]
 <br/>
 <br/>
 
