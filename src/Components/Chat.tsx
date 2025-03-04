@@ -3,17 +3,14 @@ import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import useFetch from "../Hooks/useFetch";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
 display: flex;
 flex-direction: column;
 align-items: center;
-`;
-
-const Title = styled.span`
-font-size: 2rem;
-margin-top: 5rem;
+justify-content: center;
+border: 1px solid white;
+border-radius: 1rem;
 `;
 
 const FormWrapper = styled.form`
@@ -22,26 +19,12 @@ flex-direction: column;
 align-items: center;
 `;
 
-const InputWrapper = styled.div`
-margin-top: 3rem;
-display:flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-border: 1px solid ${(props) => props.theme.textColor};
-padding: 1.5rem;
-border-radius: 2rem;
-`;
-
 const CheckInput = styled.div`
 display:flex;
 align-items: center;
-gap: 2rem;
 `;
 
 const UsernameInput = styled.input`
-height: 2.5rem;
-width: 15rem;
 padding: 1rem;
 border-radius: 2rem;
 border: 1px solid ${(props) => props.theme.textColor};
@@ -72,36 +55,14 @@ const DupBtn = styled(Btn)`
   font-size: 1rem;
 `;
 
-const GrayBtn = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 3.5rem;
-  width: 17rem;
-  background-color: gray;
-  color: #fff;
-  margin: 1.5rem;
-  border-radius: 0.7rem;
-  padding: 2rem;
-  font-size: 1.2rem;
-  border: 1px solid gray;
-  cursor: pointer;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: 3rem;
-`;
-
 const BoxContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 3rem;
   border: 1px solid ${(props) => props.theme.textColor};
-  padding: 1.5rem;
-  border-radius: 3rem;
-  width: 40%;
-  height: 25em;
+  padding: 1rem;
+  border-radius: 1rem;
+  width: 25rem;
+  height: 25rem;
   overflow-y: auto;
   overflow-x: hidden;
 `;
@@ -110,9 +71,9 @@ const InfoBox = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 1.2rem;
-  padding: 1.5rem;
+  padding: 1rem;
+  width: 25rem;
 `;
-
 
 const Chat = () => {
   const [client, setClient] = useState<Client | null>(null);
@@ -120,7 +81,6 @@ const Chat = () => {
   const [message, setMessage] = useState("");
   const { data: userInfoData } = useFetch("http://localhost:8080/info");
   const userInfo = userInfoData;
-  const navigate = useNavigate();
 
   useEffect(() => {
     // SockJS를 사용한 WebSocket 연결
@@ -167,36 +127,26 @@ const Chat = () => {
     }
   };
 
-  const gotoBack = () => {
-    navigate(-1);
-  };
-
   return (
     <Wrapper>
-      <Title>Live Chat</Title>
-      {messages.length > 0 && <BoxContainer>
-        {messages && messages.map((msg) => (
+      <BoxContainer>
+        {messages.map((msg) => (
           <InfoBox>
             {msg.nickname} : {msg.content}
           </InfoBox>
         ))}
-      </BoxContainer>}
+      </BoxContainer>
       <FormWrapper onSubmit={sendMessage}>
-        <InputWrapper>
-          <CheckInput>
-            <UsernameInput
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="메시지를 입력하세요..."
-            />
-            <DupBtn type="submit">전송</DupBtn>
-          </CheckInput>
-        </InputWrapper>
+        <CheckInput>
+          <UsernameInput
+            type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="메시지를 입력하세요..."
+          />
+          <DupBtn type="submit">전송</DupBtn>
+        </CheckInput>
       </FormWrapper>
-      <ButtonContainer>
-        <GrayBtn type="button" onClick={gotoBack}>뒤로가기</GrayBtn>
-      </ButtonContainer>
     </Wrapper>
   );
 };

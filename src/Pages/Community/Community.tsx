@@ -17,18 +17,14 @@ const Title = styled.h2`
     text-align: center;
 `;
 
-const Header = styled.div`
-    display: flex;
-    gap: 1rem;
-    padding: 2rem;
-`;
 
 const EditBtn = styled.button`
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    margin-right: 1rem;
     border: 1px solid green;
     color: ${(props) => props.theme.textColor};
-    border-radius: 3rem;
-    padding: 1.3rem;
+    border-radius: 5rem;
+    padding: 0.5rem;
     background-color: green;
     cursor: pointer;
     transition: all 0.3s;
@@ -40,11 +36,11 @@ const EditBtn = styled.button`
 `;
 
 const DeleteBtn = styled.button`
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     border: 1px solid crimson;
     color: ${(props) => props.theme.textColor};
-    border-radius: 3rem;
-    padding: 1.3rem;
+    border-radius: 5rem;
+    padding: 0.5rem;
     background-color: crimson;
     cursor: pointer;
     transition: all 0.3s;
@@ -57,14 +53,12 @@ const DeleteBtn = styled.button`
 
 const NickName = styled.span`
     font-size: 1.5rem;
-    border: 1px solid ${(props) => props.theme.textColor};
     border-radius: 3rem;
     padding: 1.3rem;
 `;
 
 const Date = styled.span`
     font-size: 1.5rem;
-    border: 1px solid ${(props) => props.theme.textColor};
     border-radius: 3rem;
     padding: 1.3rem;
 `;
@@ -74,9 +68,9 @@ const Dynamiccontent = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 1px solid ${(props) => props.theme.textColor};
-    border-radius: 3rem;
+    border-top: 1px solid ${(props) => props.theme.textColor};
     padding: 2.5rem;
+    margin-top: 1rem;
     gap: 1rem;
     img {
         width: 30rem;
@@ -89,25 +83,25 @@ const Dynamiccontent = styled.div`
 
 const CommentBox = styled.div`
     margin-top: 2rem;
-    padding: 3rem;
+    margin-bottom: 2rem;
+    padding: 1.3rem;
     border: 1px solid ${(props) => props.theme.textColor};
-    border-radius: 1.5rem;
+    border-radius: 1rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
 `;
 
-const CommentItems = styled.ul``;
+const CommentItems = styled.ul`
+    display: flex;
+    flex-direction: column;
+`;
 
 const CommentItem = styled.li`
-    border: 1px solid ${(props) => props.theme.textColor};
-    border-radius: 3rem;
     padding: 1rem;
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
+    font-size: 1.2rem;
 `;
 
 const InputBox = styled.input`
@@ -201,10 +195,16 @@ const PreviousBtn = styled.button`
 
 const TitleBox = styled.div`
   margin-top: 5rem;
+  margin-bottom: 2rem;
   display  : flex;
   flex-direction: row-reverse;
   gap: 2rem;
 `;
+
+
+const ContentBox = styled.div`
+text-align: center;
+`
 
 function Community() {
     const { communityid } = useParams();
@@ -343,9 +343,9 @@ function Community() {
                 <MainContainer key={content.id}>
                     <TitleBox>
                         <Title>{content.title}</Title>
-                        <PreviousBtn onClick={() => navigate(-1)}>←</PreviousBtn>
+                        <PreviousBtn onClick={() => navigate('/community')}>←</PreviousBtn>
                     </TitleBox>
-                    <Header>
+                    <ContentBox>
                         <NickName>{content.nickname}</NickName>
                         <Date>{date}</Date>
                         {content.nickname === userInfo?.nickname &&
@@ -357,70 +357,68 @@ function Community() {
                                 <DeleteBtn onClick={deleteCommunity}>Delete</DeleteBtn>
                             </>
                         }
-                    </Header>
-                    <Dynamiccontent
-                        dangerouslySetInnerHTML={{
-                            __html: content.content,
-                        }}
-                    />
-                    <CommentBox>
-                        {commentList.map((comment) => (
-                            <div key={comment.id}>
-                                <CommentItems>
-                                    <CommentItem>
-                                        {comment.nickname} :
-                                        {editCommentId === comment.id ? (
-                                            <BtnBox>
-                                                <InputBox
-                                                    value={editCommentContent}
-                                                    onChange={(e) =>
-                                                        setEditCommentContent(
-                                                            e.target.value
-                                                        )
-                                                    }
-                                                />
-                                                <EditBtn2 onClick={updateComment}>
-                                                    수정 완료
-                                                </EditBtn2>
-                                                <CancelBtn onClick={cancelComment}>
-                                                    취소
-                                                </CancelBtn>
-                                            </BtnBox>
-                                        ) : (
-                                            <>
-                                                {comment.content}
-                                                {comment.nickname === userInfo?.nickname &&
-                                                    <>
-                                                        <BtnBox>
-                                                            <EditBtn2
-                                                                onClick={() =>
-                                                                    editCommentToggle(
-                                                                        comment
-                                                                    )
-                                                                }
-                                                            >
-                                                                수정
-                                                            </EditBtn2>
-                                                            <DeleteBtn2
-                                                                onClick={(e) =>
-                                                                    deleteComment(
-                                                                        e,
-                                                                        comment.id
-                                                                    )
-                                                                }
-                                                            >
-                                                                삭제
-                                                            </DeleteBtn2>
-                                                        </BtnBox>
-                                                    </>
-                                                }
-                                            </>
-                                        )}
-                                    </CommentItem>
-                                </CommentItems>
-                            </div>
-                        ))}
 
+                        <Dynamiccontent
+                            dangerouslySetInnerHTML={{
+                                __html: content.content,
+                            }}
+                        />
+                    </ContentBox>
+
+                    <CommentBox><CommentItems>
+                        {commentList.map((comment) => (
+                            <CommentItem key={comment.id}>
+                                {comment.nickname} :
+                                {editCommentId === comment.id ? (
+                                    <BtnBox>
+                                        <InputBox
+                                            value={editCommentContent}
+                                            onChange={(e) =>
+                                                setEditCommentContent(
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+                                        <EditBtn2 onClick={updateComment}>
+                                            수정 완료
+                                        </EditBtn2>
+                                        <CancelBtn onClick={cancelComment}>
+                                            취소
+                                        </CancelBtn>
+                                    </BtnBox>
+                                ) : (
+                                    <>
+                                        {comment.content}
+                                        {comment.nickname === userInfo?.nickname &&
+                                            <>
+                                                <BtnBox>
+                                                    <EditBtn2
+                                                        onClick={() =>
+                                                            editCommentToggle(
+                                                                comment
+                                                            )
+                                                        }
+                                                    >
+                                                        수정
+                                                    </EditBtn2>
+                                                    <DeleteBtn2
+                                                        onClick={(e) =>
+                                                            deleteComment(
+                                                                e,
+                                                                comment.id
+                                                            )
+                                                        }
+                                                    >
+                                                        삭제
+                                                    </DeleteBtn2>
+                                                </BtnBox>
+                                            </>
+                                        }
+                                    </>
+                                )}
+                            </CommentItem>
+                        ))}
+                    </CommentItems>
                         <form onSubmit={postComment}>
                             <InputContainer>
                                 <InputBox

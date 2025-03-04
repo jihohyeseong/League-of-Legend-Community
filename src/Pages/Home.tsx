@@ -1,13 +1,13 @@
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { getCommunityList, ICommunity } from "../api";
-import { useNavigate } from "react-router-dom";
+import Chat from "../Components/Chat";
 
 const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    gap: 3rem;
 `;
 
 const Loading = styled.div`
@@ -20,7 +20,7 @@ const Loading = styled.div`
 
 const SpinnerImg = styled.div`
     border: 4px solid rgba(255, 255, 255, 0.1);
-    border-top: 4px solid ${(props) => props.theme.bgColor};
+    border-top: 4px solid ${(props) => props.theme.textColor};
     border-radius: 50%;
     width: 4rem;
     aspect-ratio: 1;
@@ -36,21 +36,20 @@ const SpinnerImg = styled.div`
 }
 `;
 
-const MainContainer = styled.div``;
-
-const Title = styled.span`
-    display: inline-block;
+const Title = styled.h2`
     font-size: 3rem;
-    padding: 3rem;
     margin-top: 5rem;
+    padding-bottom: 3rem;
+    text-align: center;
 `;
 
 const Box = styled.div`
     text-align: center;
     border-radius: 1rem;
-    padding: 3rem;
-    background-color: ${(props) => props.theme.textColor};
-    color: ${(props) => props.theme.bgColor};
+    width: 30rem;
+    padding: 4.5rem;
+    border: 1px solid ${(props) => props.theme.textColor};
+    color: ${(props) => props.theme.textColor};
 `;
 
 const ALink = styled.a`
@@ -76,19 +75,21 @@ const CommunityList = styled.ul`
 const ListItem = styled.li`
     font-size: 1.5rem;
     border-radius: 1rem;
-    border: 1px solid ${(props) => props.theme.bgColor}; /* 테두리 추가 */
-    background-color: ${(props) => props.theme.textColor}; /* 배경색 추가 */
+    border: 1px solid ${(props) => props.theme.textColor};
+    background-color: ${(props) => props.theme.bgColor};
+    color: ${(props) => props.theme.textColor};
 `;
 
 const Card = styled.div`
     display: flex;
     justify-content: space-around;
+    align-items: center;
     padding: 2rem;
     border-radius: 3rem;
 `;
 
 const More = styled.span`
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     transition: color 0.5s;
 
     &:hover {
@@ -96,47 +97,22 @@ const More = styled.span`
     }
 `;
 
-const ChatBtnBox = styled.div`
-    position: absolute;
-    right: 10rem;
-    top: 30rem;
-    @media (width < 1280px) {
-        top:50rem;
-    }
+const CardName = styled.span`
+    font-size: 1.1rem;
 `;
-
-const ChatBtn = styled.button`
-display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 12rem;
-  background-color: #10a37f;
-  color: #fff;
-  border-radius: 0.7rem;
-  padding: 1.5rem;
-  font-size: 1.2rem;
-  border: 1px solid #10a37f;
-  cursor: pointer;
-`;
-
 
 function Home() {
-    const navigate = useNavigate();
     const { isLoading: LoadingCommunity, data: Community } = useQuery<ICommunity>("community", getCommunityList);
-    const gotoChat = () => {
-        navigate("/chat");
-    }
 
     return (
-        <Wrapper>
-            <MainContainer>
-                <Title>Welcome League Of Legend Community</Title>
+        <>
+            <Title>Welcome League Of Legend Community</Title>
+            <Wrapper>
                 <Box>
                     <BoxTitle>
                         최근 글
                         {Community && <More><ALink href="/community">More...</ALink></More>}
                     </BoxTitle>
-
                     {LoadingCommunity ? (
                         <Loading>
                             <SpinnerImg></SpinnerImg>
@@ -148,10 +124,7 @@ function Home() {
                                     .slice(0, 3).map((community) => (
                                         <ListItem key={community.id}>
                                             <Card>
-                                                <span>{community.title}</span>
-                                                <span>
-                                                    -{community.nickname}-
-                                                </span>
+                                                {community.title} <CardName>- {community.nickname} -</CardName>
                                             </Card>
                                         </ListItem>
                                     ))
@@ -163,11 +136,10 @@ function Home() {
                         </CommunityList>
                     )}
                 </Box>
-            </MainContainer>
-            <ChatBtnBox>
-                {Community && <ChatBtn onClick={gotoChat}>채팅방 입장</ChatBtn>}
-            </ChatBtnBox>
-        </Wrapper >
+                <Chat />
+            </Wrapper >
+        </>
+
     );
 }
 

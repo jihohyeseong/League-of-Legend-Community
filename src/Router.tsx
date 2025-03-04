@@ -11,7 +11,7 @@ import App from "./App";
 import ErrorPage from "./Pages/ErrorPage";
 import ErrorComponent from "./Components/ErrorComponent";
 import EditNickName from "./Pages/EditNickName";
-import Chat from "./Pages/Chat";
+import Chat from "./Components/Chat";
 import EditTeamImage from "./Pages/EditTeamImage";
 
 const Router = createBrowserRouter([

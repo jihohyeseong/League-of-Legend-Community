@@ -74,26 +74,21 @@ const Img = styled.img`
 
 function Login() {
     const setLogin = useSetRecoilState(isLoginAtom);
-    const toggleLoginAtom = () => {
-        setLogin((current: boolean) => !current);
-    };
     const googleOnclick = () => {
         window.location.href =
             "http://localhost:8080/oauth2/authorization/google";
-        // toggleLoginAtom();
-        setLogin(true); 
+        setLogin(true);
     };
     const naverOnclick = () => {
         window.location.href =
             "http://localhost:8080/oauth2/authorization/naver";
-        // toggleLoginAtom();
-        setLogin(true); 
+
+        setLogin(true);
     };
     const kakaoOnclick = () => {
         window.location.href =
             "http://localhost:8080/oauth2/authorization/kakao";
-        // toggleLoginAtom();
-        setLogin(true); 
+        setLogin(true);
     };
     return (
         <Wrapper>
