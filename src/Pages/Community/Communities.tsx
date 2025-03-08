@@ -11,7 +11,6 @@ const MainContainer = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 3rem;
 `;
 
 const MainContainerHeader = styled.div`
@@ -50,7 +49,7 @@ const CreateBtn = styled.button`
 `;
 
 const TableBox = styled.table`
-    padding: 3rem;
+    padding: 1rem 2rem;
     border: 1px solid ${(props) => props.theme.textColor};
     border-radius: 1rem;
     display: flex;
@@ -67,7 +66,7 @@ const TableBody = styled.tr`
     padding: 1.5rem;
     gap: 2rem;
     transition: color 0.3s;
-    border: 1px solid ${(props) => props.theme.accentColor};
+    border-bottom: 1px solid ${(props) => props.theme.accentColor};
 `;
 
 const TableBodytd = styled.td`
@@ -107,6 +106,7 @@ const LikeButton = styled.button`
 
 const BtnContainer = styled.div`
     display: flex;
+    justify-content: center;
     gap:1rem;
 `;
 
@@ -129,7 +129,7 @@ function Communities() {
     const [date, setDate] = useState<string[]>([]);
 
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 10;
+    const itemsPerPage = 5;
 
     useEffect(() => {
         (async () => {
@@ -179,11 +179,11 @@ function Communities() {
     return (
         <Wrapper>
             <MainContainer>
-                <MainContainerHeader>
-                    <Title>Community</Title>
-                    <CreateBtn onClick={newWrite}>글쓰기</CreateBtn>
-                </MainContainerHeader>
+                {/* <MainContainerHeader>
+
+                </MainContainerHeader> */}
                 <TableBox>
+                    {/* <CreateBtn onClick={newWrite}>글쓰기</CreateBtn> */}
                     {displayedItems.slice(0, 10).map((community, index) => (
                         <TableBody key={community.id}>
                             <TableBodytd><LikeButton onClick={() => addLike(community.id)}>❤️{community.likesCount}</LikeButton></TableBodytd>
@@ -196,18 +196,18 @@ function Communities() {
                             <TableBodytd>-{community.nickname}-</TableBodytd>
                         </TableBody>
                     ))}
+                    <BtnContainer>
+                        {Array.from({ length: totalPages }, (_, index) => (
+                            <PageButton
+                                key={index + 1}
+                                onClick={() => changePage(index + 1)}
+                                disabled={currentPage === index + 1}
+                            >
+                                {index + 1}
+                            </PageButton>
+                        ))}
+                    </BtnContainer>
                 </TableBox>
-                <BtnContainer>
-                    {Array.from({ length: totalPages }, (_, index) => (
-                        <PageButton
-                            key={index + 1}
-                            onClick={() => changePage(index + 1)}
-                            disabled={currentPage === index + 1}
-                        >
-                            {index + 1}
-                        </PageButton>
-                    ))}
-                </BtnContainer>
             </MainContainer>
         </Wrapper>
     );
