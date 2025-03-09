@@ -1,9 +1,16 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useEffect, useState } from "react";
-import { IContent } from "../../api";
+import React, { useEffect, useState } from "react";
+import { IContent } from "../api";
 
 const Wrapper = styled.div`
+    display: flex;
+    justify-content: center;
+    height: 50rem;
+    width: 50rem;
+    border: 1px solid ${(props) => props.theme.textColor};
+    padding: 1rem 2rem;
+    border-radius: 1rem;
 `;
 
 const MainContainer = styled.div`
@@ -11,20 +18,6 @@ const MainContainer = styled.div`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-`;
-
-const MainContainerHeader = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-    gap: 2rem;
-`;
-
-const Title = styled.span`
-    font-size: 3rem;
-    text-align: center;
 `;
 
 const CreateBtn = styled.button`
@@ -49,8 +42,6 @@ const CreateBtn = styled.button`
 `;
 
 const TableBox = styled.table`
-    padding: 1rem 2rem;
-    border: 1px solid ${(props) => props.theme.textColor};
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
@@ -63,7 +54,8 @@ const TableBody = styled.tr`
     align-items: center;
     justify-content: space-between;
     font-size: 1.2rem;
-    padding: 1.5rem;
+    padding: 1rem;
+    width: 45rem;
     gap: 2rem;
     transition: color 0.3s;
     border-bottom: 1px solid ${(props) => props.theme.accentColor};
@@ -80,7 +72,7 @@ const TableLink = styled.a`
 `;
 
 const TableTitle = styled.h2`
-    font-size:1.7rem;
+    font-size:1.5rem;
     font-weight: bold;
 `;
 
@@ -117,6 +109,51 @@ const PageButton = styled.button`
     background-color: transparent;
     color: ${(props) => props.theme.textColor};
     font-size:1.2rem;
+
+    &:hover {
+        color: steelblue;
+    }
+
+    &:active {
+        color: steelblue;
+    }
+`;
+
+const FilterBtnContainer = styled.div`
+    display: flex;
+`;
+
+const FilterBtn = styled.button`
+  background-color: transparent;
+  border: transparent;
+  font-size: 1rem;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    color: steelblue;
+  }
+`;
+
+const TableHeader = styled.div`
+    display: flex;
+    justify-content: space-between;
+`;
+
+const SearchForm = styled.form`
+    border: 1px solid;
+    border-radius: 1rem;
+    padding: 0.5rem;
+`;
+
+const SearchInput = styled.input`
+    background-color: transparent;
+    border: transparent;
+    color: ${(props) => props.theme.textColor};
+
+    &:focus {
+        outline: transparent;
+    }
 `;
 
 function Communities() {
@@ -130,6 +167,8 @@ function Communities() {
 
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
+
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
         (async () => {
@@ -175,24 +214,70 @@ function Communities() {
 
     const displayedItems = communitylist.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
+    if (displayedItems.length === 0) {
+        return (
+            <Wrapper>
+                <h1>로그인 후 이용해주세요</h1>
+            </Wrapper>
+        );
+    };
+
+    // 10개 이상 좋아요 받은 목록
+    const handlePopularity = async () => {
+        const response = await fetch(`http://localhost:8080/community/popularity`, {
+            method: "GET",
+            credentials: "include",
+        });
+        const data = await response.json();
+        setCommunitylist(data.content);
+    };
+
+    const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const response = await fetch(`http://localhost:8080/community/search/${search}`, {
+            method: "GET",
+            credentials: "include",
+        });
+        const data = await response.json();
+        setCommunitylist(data.content);
+    };
+
+    const handleRecent = async () => {
+        const response = await fetch(`http://localhost:8080/community`, {
+            method: "GET",
+            credentials: "include",
+        });
+        const data = await response.json();
+        setCommunitylist(data.content);
+    };
 
     return (
         <Wrapper>
             <MainContainer>
-                {/* <MainContainerHeader>
-
-                </MainContainerHeader> */}
                 <TableBox>
                     {/* <CreateBtn onClick={newWrite}>글쓰기</CreateBtn> */}
+                    <TableHeader>
+                        <FilterBtnContainer>
+                            <FilterBtn onClick={handleRecent}>최신순</FilterBtn>
+                            <FilterBtn onClick={handlePopularity}>10추</FilterBtn>
+                        </FilterBtnContainer>
+                        <SearchForm onSubmit={handleSearch}>
+                            <SearchInput type="text" placeholder="제목을 입력하세요" value={search} onChange={(e) => setSearch(e.target.value)} />
+                            <FilterBtn>검색</FilterBtn>
+                        </SearchForm>
+                    </TableHeader>
+
                     {displayedItems.slice(0, 10).map((community, index) => (
                         <TableBody key={community.id}>
                             <TableBodytd><LikeButton onClick={() => addLike(community.id)}>❤️{community.likesCount}</LikeButton></TableBodytd>
-                            <TableLink href={`/community/${community.id}`}>
+                            {/* <TableLink href={`/community/${community.id}`}> */}
+                            <Link to={`/community/${community.id}`}>
                                 <BoxInfo>
                                     <TableBodytd><TableTitle>{community.title} [{community.commentsCount}]</TableTitle></TableBodytd>
                                     <TableBodytd><TableDate>{date[index]} | 조회수:{community.viewsCount}</TableDate></TableBodytd>
                                 </BoxInfo>
-                            </TableLink>
+                            </Link>
+                            {/* </TableLink> */}
                             <TableBodytd>-{community.nickname}-</TableBodytd>
                         </TableBody>
                     ))}
@@ -209,7 +294,7 @@ function Communities() {
                     </BtnContainer>
                 </TableBox>
             </MainContainer>
-        </Wrapper>
+        </Wrapper >
     );
 }
 

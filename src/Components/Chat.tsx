@@ -7,16 +7,19 @@ import styled from "styled-components";
 const Wrapper = styled.div`
 display: flex;
 flex-direction: column;
-align-items: center;
-justify-content: center;
-border: 1px solid white;
+justify-content: space-between;
+border: 1px solid ${(props) => props.theme.textColor};
 border-radius: 1rem;
+height: 50rem;
+width: 30rem;
+padding: 2rem;
 `;
 
 const FormWrapper = styled.form`
 display:flex;
 flex-direction: column;
 align-items: center;
+border-top: 1px solid ${(props) => props.theme.textColor};
 `;
 
 const CheckInput = styled.div`
@@ -55,25 +58,19 @@ const DupBtn = styled(Btn)`
   font-size: 1rem;
 `;
 
-const BoxContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  border: 1px solid ${(props) => props.theme.textColor};
-  padding: 1rem;
-  border-radius: 1rem;
-  width: 25rem;
-  height: 25rem;
-  overflow-y: auto;
-  overflow-x: hidden;
-`;
-
 const InfoBox = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 1.2rem;
   padding: 1rem;
-  width: 25rem;
 `;
+
+const ChatBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow-y: scroll;
+`
 
 const Chat = () => {
   const [client, setClient] = useState<Client | null>(null);
@@ -124,18 +121,24 @@ const Chat = () => {
       setMessage("");
     } else {
       console.error("🚨 STOMP 연결이 안 되어 있음!");
+      alert("로그인 후 이용해주세요!");
     }
   };
 
   return (
     <Wrapper>
-      <BoxContainer>
-        {messages.map((msg) => (
-          <InfoBox>
-            {msg.nickname} : {msg.content}
-          </InfoBox>
-        ))}
-      </BoxContainer>
+      <ChatBox>
+        {messages.length > 0 ? (
+          messages.map((msg) => (
+            <InfoBox key={msg.nickname}>
+              {msg.nickname} : {msg.content}
+            </InfoBox>
+          ))
+        ) : (
+          <InfoBox>실시간 채팅을 입력하세요</InfoBox>
+        )}
+      </ChatBox>
+
       <FormWrapper onSubmit={sendMessage}>
         <CheckInput>
           <UsernameInput

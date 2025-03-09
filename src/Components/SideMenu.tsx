@@ -3,9 +3,11 @@ import styled from "styled-components"
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 1rem 2rem;
   border: 1px solid ${(props) => props.theme.textColor};
   border-radius: 1rem;
+    height: 50rem;
+    width: 20rem;
+    padding: 2rem;
 `;
 
 export default function SideMenu() {
