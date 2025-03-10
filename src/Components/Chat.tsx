@@ -5,34 +5,34 @@ import useFetch from "../Hooks/useFetch";
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-border: 1px solid ${(props) => props.theme.textColor};
-border-radius: 1rem;
-height: 50rem;
-width: 30rem;
-padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid ${(props) => props.theme.textColor};
+  border-radius: 1rem;
+  height: 50rem;
+  width: 30rem;
+  padding: 0.3rem;
 `;
 
 const FormWrapper = styled.form`
-display:flex;
-flex-direction: column;
-align-items: center;
-border-top: 1px solid ${(props) => props.theme.textColor};
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 1px solid ${(props) => props.theme.textColor};
 `;
 
 const CheckInput = styled.div`
-display:flex;
-align-items: center;
+  display:flex;
+  align-items: center;
 `;
 
 const UsernameInput = styled.input`
-padding: 1rem;
-border-radius: 2rem;
-border: 1px solid ${(props) => props.theme.textColor};
-background-color: ${(props) => props.theme.bgColor};
-color: ${(props) => props.theme.textColor};
+  padding: 1rem;
+  border-radius: 2rem;
+  border: 1px solid ${(props) => props.theme.textColor};
+  background-color: ${(props) => props.theme.bgColor};
+  color: ${(props) => props.theme.textColor};
 `;
 
 const Btn = styled.button`
@@ -70,7 +70,7 @@ const ChatBox = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   overflow-y: scroll;
-`
+`;
 
 const Chat = () => {
   const [client, setClient] = useState<Client | null>(null);

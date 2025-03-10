@@ -1,8 +1,9 @@
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { isDarkAtom, isLoginAtom } from "../atom";
+import { isDarkAtom, isLoginAtom } from "../Stores/atom";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import img from "../Assets/Images/lol.jpeg"
 
 const Gnb = styled.nav`
   padding: 1rem;
@@ -31,9 +32,20 @@ const ImgBox = styled.div`
 `;
 
 const Img = styled.img`
-width: 100%;
-height: 100%;
-object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const HomeTitle = styled.div`
+  font-size: 3rem;
+  padding: 5rem;
+  text-align: center;
+  color: white;
+  background-image: url(${img});
+  background-repeat: no-repeat;
+  background-size: 100%;
+  background-position: center;
 `;
 
 function Header() {
@@ -55,25 +67,30 @@ function Header() {
         return res.json();
       })
       .then((data) => {
-        setLogin(true); // 로그인 상태 업데이트
+        setLogin(true);
       })
       .catch(() => {
-        setLogin(false); // 로그인 실패 시 상태 업데이트
+        setLogin(false); 
       });
   }, [setLogin]);
 
 
 
   return (
-    <Gnb>
-      <Itemlist>
-        <Item><Link to="/">HOME</Link></Item>
-        {!isLogin ? <Item><Link to="/login">LOG IN</Link></Item> : <Item><Link to="/mypage">MY PAGE</Link></Item>}
-        <ImgBox key={isDark ? 'dark' : 'light'}>
-          <Img src={isDark ? "https://cdn-icons-png.flaticon.com/512/6360/6360844.png" : "https://cdn-icons-png.flaticon.com/512/6714/6714978.png"} onClick={toggleDarkAtom} />
-        </ImgBox>
-      </Itemlist>
-    </Gnb >
+    <>
+      <Gnb>
+        <Itemlist>
+          <Item><Link to="/">HOME</Link></Item>
+          {!isLogin ? <Item><Link to="/login">LOG IN</Link></Item> : <Item><Link to="/mypage">MY PAGE</Link></Item>}
+          <ImgBox key={isDark ? 'dark' : 'light'}>
+            <Img src={isDark ? "https://cdn-icons-png.flaticon.com/512/6360/6360844.png" : "https://cdn-icons-png.flaticon.com/512/6714/6714978.png"} onClick={toggleDarkAtom} />
+          </ImgBox>
+        </Itemlist>
+      </Gnb >
+      <HomeTitle>Welcome League Of Legend Community</HomeTitle>
+    </>
+
+
   );
 }
 

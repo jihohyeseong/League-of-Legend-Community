@@ -1,7 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import React, { useEffect, useState } from "react";
-import { IContent } from "../api";
+import { IContent } from "../Types/api";
+import { useRecoilValue } from "recoil";
+import { isLoginAtom } from "../Stores/atom";
+import { CustomButton } from "./Button";
 
 const Wrapper = styled.div`
     display: flex;
@@ -61,15 +64,7 @@ const TableBody = styled.tr`
     border-bottom: 1px solid ${(props) => props.theme.accentColor};
 `;
 
-const TableBodytd = styled.td`
-    
-`;
-
-const TableLink = styled.a`
-    &:hover {
-        color: ${(props) => props.theme.boxTextColor};
-    }
-`;
+const TableBodytd = styled.td``;
 
 const TableTitle = styled.h2`
     font-size:1.5rem;
@@ -162,6 +157,8 @@ function Communities() {
         navigate("/community/write");
     };
 
+    const isLogin = useRecoilValue(isLoginAtom);
+
     const [communitylist, setCommunitylist] = useState<IContent[]>([]);
     const [date, setDate] = useState<string[]>([]);
 
@@ -196,6 +193,7 @@ function Communities() {
         })();
     }, []);
 
+    // 좋아요 버튼 누르기
     const addLike = async (id: Number) => {
         const res = await fetch(`http://localhost:8080/community/${id}/like`, {
             method: "POST",
@@ -206,23 +204,28 @@ function Communities() {
         window.location.reload();
     };
 
+    // 페이지화 처리하기
     const totalPages = Math.ceil(communitylist.length / itemsPerPage);
-
     const changePage = (pageNumber: number) => {
         setCurrentPage(pageNumber);
     };
-
     const displayedItems = communitylist.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-    if (displayedItems.length === 0) {
+    // 비로그인 커뮤니티 이용불가
+    if (!isLogin) {
         return (
             <Wrapper>
                 <h1>로그인 후 이용해주세요</h1>
             </Wrapper>
-        );
-    };
+        )
+    }
 
-    // 10개 이상 좋아요 받은 목록
+    // if (displayedItems.length === 0) {
+    //     alert("검색 결과가 없습니다.");
+    //     setSearch("");
+    // };
+
+    // 10개 이상 좋아요 정렬
     const handlePopularity = async () => {
         const response = await fetch(`http://localhost:8080/community/popularity`, {
             method: "GET",
@@ -232,6 +235,7 @@ function Communities() {
         setCommunitylist(data.content);
     };
 
+    // 게시글 검색 폼
     const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const response = await fetch(`http://localhost:8080/community/search/${search}`, {
@@ -240,8 +244,10 @@ function Communities() {
         });
         const data = await response.json();
         setCommunitylist(data.content);
+        setSearch("");
     };
 
+    // 최신순으로 정렬
     const handleRecent = async () => {
         const response = await fetch(`http://localhost:8080/community`, {
             method: "GET",
@@ -263,21 +269,21 @@ function Communities() {
                         </FilterBtnContainer>
                         <SearchForm onSubmit={handleSearch}>
                             <SearchInput type="text" placeholder="제목을 입력하세요" value={search} onChange={(e) => setSearch(e.target.value)} />
-                            <FilterBtn>검색</FilterBtn>
+                            <CustomButton variant="input" type="submit">검색</CustomButton>
                         </SearchForm>
                     </TableHeader>
 
                     {displayedItems.slice(0, 10).map((community, index) => (
                         <TableBody key={community.id}>
-                            <TableBodytd><LikeButton onClick={() => addLike(community.id)}>❤️{community.likesCount}</LikeButton></TableBodytd>
-                            {/* <TableLink href={`/community/${community.id}`}> */}
+                            <TableBodytd>
+                                <LikeButton onClick={() => addLike(community.id)}>❤️{community.likesCount}</LikeButton>
+                            </TableBodytd>
                             <Link to={`/community/${community.id}`}>
                                 <BoxInfo>
                                     <TableBodytd><TableTitle>{community.title} [{community.commentsCount}]</TableTitle></TableBodytd>
                                     <TableBodytd><TableDate>{date[index]} | 조회수:{community.viewsCount}</TableDate></TableBodytd>
                                 </BoxInfo>
                             </Link>
-                            {/* </TableLink> */}
                             <TableBodytd>-{community.nickname}-</TableBodytd>
                         </TableBody>
                     ))}

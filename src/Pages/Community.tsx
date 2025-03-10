@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { IComment, IContent, UserInfo } from "../../api";
-import SideMenu from "../../Components/SideMenu";
-import Chat from "../../Components/Chat";
-import img from "../../Assets/Images/lol.jpeg"
+import { IComment, IContent, UserInfo } from "../Types/api";
+import SideMenu from "../Components/SideMenu";
+import Chat from "../Components/Chat";
+import img from "../Assets/Images/lol.jpeg"
+import { CustomButton } from "../Components/Button";
 
 const Wrapper = styled.div`
     display: flex;
@@ -14,16 +15,7 @@ const Wrapper = styled.div`
     padding: 3rem;
 `;
 
-const HomeTitle = styled.div`
-    font-size: 3rem;
-    padding: 5rem;
-    text-align: center;
-    color: white;
-    background-image: url(${img});
-    background-repeat: no-repeat;
-    background-size: 100%;
-    background-position: center;
-`;
+
 
 const MainContainer = styled.div`
     display: flex;
@@ -40,38 +32,6 @@ const MainContainer = styled.div`
 const Title = styled.h2`
     font-size: 2rem;
     text-align: left;
-`;
-
-const EditBtn = styled.button`
-    font-size: 0.7rem;
-    border: 1px solid green;
-    color: ${(props) => props.theme.textColor};
-    border-radius: 5rem;
-    padding: 0.5rem;
-    background-color: green;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-        background-color: ${(props) => props.theme.bgColor};
-        border: 1px solid ${(props) => props.theme.bgColor};
-    }
-`;
-
-const DeleteBtn = styled.button`
-    font-size: 0.7rem;
-    border: 1px solid crimson;
-    color: ${(props) => props.theme.textColor};
-    border-radius: 5rem;
-    padding: 0.5rem;
-    background-color: crimson;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-        background-color: ${(props) => props.theme.bgColor};
-        border: 1px solid ${(props) => props.theme.bgColor};
-    }
 `;
 
 const NickName = styled.span`
@@ -133,69 +93,10 @@ const InputBox = styled.input`
     }
 `;
 
-const InputBtn = styled.button`
-    background-color: transparent;
-    border: transparent;
-    color: ${(props) => props.theme.textColor};
-    display: inline-block;
-    border-radius: 1rem;
-    padding: 0.5rem;
-    cursor: pointer;
-
-    &:hover {
-        color: steelblue;
-    }
-`;
-
 const BtnBox = styled.div`
     display: flex;
     align-items: center;
     gap: 0.5rem;
-`;
-
-const EditBtn2 = styled.button`
-    border: 1px solid green;
-    color: ${(props) => props.theme.textColor};
-    border-radius: 1rem;
-    padding: 0.3rem;
-    background-color: green;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-        background-color: ${(props) => props.theme.bgColor};
-        border: 1px solid ${(props) => props.theme.bgColor};
-    }
-`;
-
-const DeleteBtn2 = styled.button`
-    border: 1px solid crimson;
-    color: ${(props) => props.theme.textColor};
-    border-radius: 1rem;
-    padding: 0.3rem;
-    background-color: crimson;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-        background-color: ${(props) => props.theme.bgColor};
-        border: 1px solid ${(props) => props.theme.bgColor};
-    }
-`;
-
-const CancelBtn = styled.button`
-    border: 1px solid crimson;
-    color: ${(props) => props.theme.textColor};
-    border-radius: 3rem;
-    padding: 0.5rem;
-    background-color: crimson;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-        background-color: ${(props) => props.theme.bgColor};
-        border: 1px solid ${(props) => props.theme.bgColor};
-    }
 `;
 
 const CommentForm = styled.form`
@@ -265,10 +166,8 @@ function Community() {
 
     }, [communityid]);
 
-    const deleteCommunity = async (
-        event: React.MouseEvent<HTMLButtonElement>
-    ) => {
-        event.preventDefault();
+    const deleteCommunity = async (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
         const response = await fetch(
             `http://localhost:8080/community/${communityid}`,
             {
@@ -278,7 +177,7 @@ function Community() {
         );
         if (response.status === 200) {
             alert("게시글 삭제가 완료되었습니다.");
-            navigate("/community");
+            navigate("/");
         } else {
             alert("게시글 삭제가 불가합니다. 다시 이용해 주세요!");
             window.location.reload();
@@ -349,7 +248,6 @@ function Community() {
 
     return (
         <>
-            <HomeTitle>Welcome League Of Legend Community</HomeTitle>
             <Wrapper>
                 <SideMenu />
                 {content && (
@@ -360,8 +258,8 @@ function Community() {
                             <Date>{date}</Date>
                             {content.nickname === userInfo?.nickname &&
                                 <BtnBox>
-                                    <EditBtn onClick={gotoEdit}>Edit</EditBtn>
-                                    <DeleteBtn onClick={deleteCommunity}>Delete</DeleteBtn>
+                                    <CustomButton variant="edit" onClick={gotoEdit}>수정</CustomButton>
+                                    <CustomButton variant="delete" onClick={deleteCommunity}>삭제</CustomButton>
                                 </BtnBox>
                             }
                         </ContentHeader>
@@ -388,12 +286,8 @@ function Community() {
                                                         )
                                                     }
                                                 />
-                                                <EditBtn2 onClick={updateComment}>
-                                                    수정 완료
-                                                </EditBtn2>
-                                                <CancelBtn onClick={cancelComment}>
-                                                    취소
-                                                </CancelBtn>
+                                                <CustomButton variant="edit" onClick={updateComment}>수정완료</CustomButton>
+                                                <CustomButton variant="cancel" onClick={cancelComment}>취소</CustomButton>
                                             </BtnBox>
                                         ) : (
                                             <>
@@ -401,25 +295,8 @@ function Community() {
                                                 {comment.nickname === userInfo?.nickname &&
                                                     <>
                                                         <BtnBox>
-                                                            <EditBtn2
-                                                                onClick={() =>
-                                                                    editCommentToggle(
-                                                                        comment
-                                                                    )
-                                                                }
-                                                            >
-                                                                수정
-                                                            </EditBtn2>
-                                                            <DeleteBtn2
-                                                                onClick={(e) =>
-                                                                    deleteComment(
-                                                                        e,
-                                                                        comment.id
-                                                                    )
-                                                                }
-                                                            >
-                                                                삭제
-                                                            </DeleteBtn2>
+                                                            <CustomButton variant="edit" onClick={() => editCommentToggle(comment)}>수정</CustomButton>
+                                                            <CustomButton variant="delete" onClick={(e) => deleteComment(e, comment.id)}>삭제</CustomButton>
                                                         </BtnBox>
                                                     </>
                                                 }
@@ -434,7 +311,7 @@ function Community() {
                                 placeholder="댓글을 입력하세요"
                                 onChange={onChangeInput}
                             />
-                            <InputBtn>입력</InputBtn>
+                            <CustomButton variant="input" type="submit">입력</CustomButton>
                         </CommentForm>
                     </MainContainer>
                 )}

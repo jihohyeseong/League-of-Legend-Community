@@ -1,9 +1,9 @@
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { IContent } from "../../api";
+import { IContent } from "../Types/api";
 
 const Wrapper = styled.div`
   display: flex;

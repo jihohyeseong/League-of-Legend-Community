@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import useFetch from "../Hooks/useFetch";
 import { useNavigate } from "react-router-dom";
-import { ITeamImage } from "../api";
+import { ITeamImage } from "../Types/api";
 
 const Wrapper = styled.div`
 display: flex;

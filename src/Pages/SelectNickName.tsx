@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { getCheckDuplicate, ITeamImage } from "../api";
+import { ITeamImage } from "../Types/api";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -134,7 +134,10 @@ function SelectNickName() {
   const writeNickname = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const imageUrl = myTeam?.imageUrl;
-    const response = await getCheckDuplicate(nickname);
+    const response = await fetch(`http://localhost:8080/check/${nickname}`, {
+      method: "GET",
+      credentials: "include",
+    });
     const status = response.status;
     if (status === 409) {
       alert(nickname + "은 중복입니다. 다른 닉네임으로 만들어주세요.");

@@ -1,16 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
-import Login from "./Pages/Login";
-import SelectNickName from "./Pages/SelectNickName";
-import MyPage from "./Pages/Mypage";
-import CommunityWrite from "./Pages/Community/CommunityWrite";
-import Community from "./Pages/Community/Community";
-import CommunityEdit from "./Pages/Community/CommunityEdit";
-import Home from "./Pages/Home";
-import App from "./App";
-import ErrorPage from "./Pages/ErrorPage";
-import ErrorComponent from "./Components/ErrorComponent";
-import EditNickName from "./Pages/EditNickName";
-import EditTeamImage from "./Pages/EditTeamImage";
+import Login from "../Pages/Login";
+import SelectNickName from "../Pages/SelectNickName";
+import MyPage from "../Pages/Mypage";
+import CommunityWrite from "../Pages/CommunityWrite";
+import Community from "../Pages/Community";
+import CommunityEdit from "../Pages/CommunityEdit";
+import Home from "../Pages/Home";
+import App from "../App";
+import ErrorPage from "../Pages/ErrorPage";
+import ErrorComponent from "../Components/ErrorComponent";
+import EditNickName from "../Pages/EditNickName";
+import EditTeamImage from "../Pages/EditTeamImage";
 
 const Router = createBrowserRouter([
   {

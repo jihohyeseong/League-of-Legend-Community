@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { isLoginAtom } from "../atom";
+import { useSetRecoilState } from "recoil";
+import { isLoginAtom } from "../Stores/atom";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { User, UserInfo } from "../api";
+import { User, UserInfo } from "../Types/api";
 import useFetch from "../Hooks/useFetch";
 
 const Wrapper = styled.div`
@@ -90,7 +90,6 @@ function MyPage() {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>();
   const [userInfo, setUserInfo] = useState<UserInfo>();
-  let isLogin = useRecoilValue(isLoginAtom);
 
   const { data: userData } = useFetch("http://localhost:8080/mypage");
   const { data: userInfoData } = useFetch("http://localhost:8080/info");
@@ -133,7 +132,6 @@ function MyPage() {
     });
     alert("탈퇴가 완료되었습니다.");
     navigate("/login");
-    isLogin = false;
   };
 
   const gotoNickNameEdit = () => {

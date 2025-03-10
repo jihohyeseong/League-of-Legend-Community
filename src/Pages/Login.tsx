@@ -1,6 +1,6 @@
 import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
-import { isLoginAtom } from "../atom";
+import { isLoginAtom } from "../Stores/atom";
 
 const Wrapper = styled.div`
     display: flex;

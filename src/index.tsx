@@ -3,9 +3,9 @@ import { RecoilRoot, useRecoilValue } from "recoil";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./Styles/theme";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { isDarkAtom } from "./atom";
+import { isDarkAtom } from "./Stores/atom";
 import { RouterProvider } from "react-router-dom";
-import Router from "./Router";
+import Router from "./Routes/Router";
 
 const GlobalStyle = createGlobalStyle`
     html, body, div, span, applet, object, iframe,
