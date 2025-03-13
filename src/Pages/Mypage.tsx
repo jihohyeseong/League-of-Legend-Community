@@ -118,7 +118,6 @@ function MyPage() {
     });
     toggleLoginAtom();
     navigate("/");
-    window.location.reload();
   };
 
   const gotoUserInfo = () => {

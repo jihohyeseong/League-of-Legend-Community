@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { IComment, IContent, UserInfo } from "../Types/api";
 import SideMenu from "../Components/SideMenu";
 import Chat from "../Components/Chat";
-import img from "../Assets/Images/lol.jpeg"
 import { CustomButton } from "../Components/Button";
 
 const Wrapper = styled.div`
@@ -14,8 +13,6 @@ const Wrapper = styled.div`
     gap: 1rem;
     padding: 3rem;
 `;
-
-
 
 const MainContainer = styled.div`
     display: flex;

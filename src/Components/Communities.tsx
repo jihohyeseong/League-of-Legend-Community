@@ -5,6 +5,8 @@ import { IContent } from "../Types/api";
 import { useRecoilValue } from "recoil";
 import { isLoginAtom } from "../Stores/atom";
 import { CustomButton } from "./Button";
+import useFetch from "../Hooks/useFetch";
+import image from "../Assets/Images/writing.png";
 
 const Wrapper = styled.div`
     display: flex;
@@ -23,43 +25,22 @@ const MainContainer = styled.div`
     flex-direction: column;
 `;
 
-const CreateBtn = styled.button`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.3rem;
-    height: 3rem;
-    width: 10rem;
-    background-color: ${(props) => props.theme.textColor};
-    color: ${(props) => props.theme.bgColor};
-    border: 1px solid ${(props) => props.theme.textColor};
-    border-radius: 2rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in;
-
-    &:hover {
-        background-color: transparent;
-        border: 1px solid ${(props) => props.theme.bgColor};
-        color:${(props) => props.theme.textColor};
-    }
-`;
-
 const TableBox = styled.table`
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    margin-bottom: 1rem;
+    
 `;
 
 const TableBody = styled.tr`
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     font-size: 1.2rem;
     padding: 1rem;
     width: 45rem;
-    gap: 2rem;
+    gap: 5rem;
     transition: color 0.3s;
     border-bottom: 1px solid ${(props) => props.theme.accentColor};
 `;
@@ -79,7 +60,6 @@ const TableDate = styled.h2`
 const BoxInfo = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
     gap: 1.3rem;
 `;
 
@@ -121,8 +101,8 @@ const FilterBtnContainer = styled.div`
 const FilterBtn = styled.button`
   background-color: transparent;
   border: transparent;
-  font-size: 1rem;
-  color: white;
+  font-size: 1.2rem;
+  color: ${(props) => props.theme.textColor};
   cursor: pointer;
 
   &:hover {
@@ -133,12 +113,14 @@ const FilterBtn = styled.button`
 const TableHeader = styled.div`
     display: flex;
     justify-content: space-between;
+    padding: 1rem 0;
+    border-bottom: 1px solid #333;
 `;
 
 const SearchForm = styled.form`
     border: 1px solid;
     border-radius: 1rem;
-    padding: 0.5rem;
+    padding: 0 1rem;
 `;
 
 const SearchInput = styled.input`
@@ -151,47 +133,47 @@ const SearchInput = styled.input`
     }
 `;
 
+const HeaderContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+`;
+
+const WriteBtnBox = styled.div`
+    display: flex;
+    justify-content: flex-end;
+`;
+
+const WriteImage = styled.img`
+    cursor:pointer;
+    width: 2.3rem;
+    object-fit: cover;
+`;
+
 function Communities() {
     const navigate = useNavigate();
-    const newWrite = () => {
-        navigate("/community/write");
-    };
-
     const isLogin = useRecoilValue(isLoginAtom);
-
     const [communitylist, setCommunitylist] = useState<IContent[]>([]);
     const [date, setDate] = useState<string[]>([]);
-
+    const [search, setSearch] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5;
-
-    const [search, setSearch] = useState("");
+    const { data: communityData } = useFetch("http://localhost:8080/community");
 
     useEffect(() => {
-        (async () => {
-            try {
-                const response = await fetch(
-                    `http://localhost:8080/community`,
-                    {
-                        method: "GET",
-                        credentials: "include",
-                    }
-                );
-                const json = await response.json();
-                setCommunitylist(json.content);
-                const result = [];
-                for (let i = 0; i < json.content.length; i++) {
-                    const dateString = json.content[i].createdAt;
-                    const [date, timeWithMs] = dateString.split("T");
-                    const time = timeWithMs.split(".")[0];
-                    result.push(`${date} ${time}`);
-                }
-                setDate(result);
-            } catch (error) {
-                console.error(error);
-            }
-        })();
-    }, []);
+        if (communityData) {
+            setCommunitylist(communityData.content);
+
+            // 날짜 포맷팅
+            const formattedDates = communityData.content.map((item: IContent) => {
+                const dateString = item.createdAt;
+                const [date, timeWithMs] = dateString.split("T");
+                const time = timeWithMs.split(".")[0];
+                return `${date} ${time}`;
+            });
+            setDate(formattedDates);
+        }
+    }, [communityData]);
 
     // 좋아요 버튼 누르기
     const addLike = async (id: Number) => {
@@ -225,16 +207,6 @@ function Communities() {
     //     setSearch("");
     // };
 
-    // 10개 이상 좋아요 정렬
-    const handlePopularity = async () => {
-        const response = await fetch(`http://localhost:8080/community/popularity`, {
-            method: "GET",
-            credentials: "include",
-        });
-        const data = await response.json();
-        setCommunitylist(data.content);
-    };
-
     // 게시글 검색 폼
     const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -257,22 +229,40 @@ function Communities() {
         setCommunitylist(data.content);
     };
 
+    // 10개 이상 좋아요 정렬
+    const handlePopularity = async () => {
+        const response = await fetch(`http://localhost:8080/community/popularity`, {
+            method: "GET",
+            credentials: "include",
+        });
+        const data = await response.json();
+        setCommunitylist(data.content);
+    };
+
+    // 글쓰기
+    const onWrite = () => {
+        navigate("/community/write");
+    };
+
     return (
         <Wrapper>
             <MainContainer>
                 <TableBox>
-                    {/* <CreateBtn onClick={newWrite}>글쓰기</CreateBtn> */}
-                    <TableHeader>
-                        <FilterBtnContainer>
-                            <FilterBtn onClick={handleRecent}>최신순</FilterBtn>
-                            <FilterBtn onClick={handlePopularity}>10추</FilterBtn>
-                        </FilterBtnContainer>
-                        <SearchForm onSubmit={handleSearch}>
-                            <SearchInput type="text" placeholder="제목을 입력하세요" value={search} onChange={(e) => setSearch(e.target.value)} />
-                            <CustomButton variant="input" type="submit">검색</CustomButton>
-                        </SearchForm>
-                    </TableHeader>
-
+                    <HeaderContainer>
+                        <WriteBtnBox>
+                            <WriteImage src={image} alt="이미지 없음" onClick={onWrite} />
+                        </WriteBtnBox>
+                        <TableHeader>
+                            <FilterBtnContainer>
+                                <FilterBtn onClick={handleRecent}>최신</FilterBtn>
+                                <FilterBtn onClick={handlePopularity}>10추</FilterBtn>
+                            </FilterBtnContainer>
+                            <SearchForm onSubmit={handleSearch}>
+                                <SearchInput type="text" placeholder="제목을 입력하세요" value={search} onChange={(e) => setSearch(e.target.value)} />
+                                <CustomButton variant="input" type="submit">검색</CustomButton>
+                            </SearchForm>
+                        </TableHeader>
+                    </HeaderContainer>
                     {displayedItems.slice(0, 10).map((community, index) => (
                         <TableBody key={community.id}>
                             <TableBodytd>
@@ -281,10 +271,12 @@ function Communities() {
                             <Link to={`/community/${community.id}`}>
                                 <BoxInfo>
                                     <TableBodytd><TableTitle>{community.title} [{community.commentsCount}]</TableTitle></TableBodytd>
-                                    <TableBodytd><TableDate>{date[index]} | 조회수:{community.viewsCount}</TableDate></TableBodytd>
+                                    <TableBodytd>
+                                        <TableDate>{date[index]} | 조회수:{community.viewsCount} | {community.nickname}</TableDate>
+                                    </TableBodytd>
                                 </BoxInfo>
                             </Link>
-                            <TableBodytd>-{community.nickname}-</TableBodytd>
+                            {/* <TableBodytd>-{community.nickname}-</TableBodytd> */}
                         </TableBody>
                     ))}
                     <BtnContainer>

@@ -23,6 +23,7 @@ const Button = styled.button<{ variant: ButtonVariant }>`
   &:hover {
     background-color: ${(props) => props.variant !== 'input' && props.theme.bgColor};
     border: 1px solid ${(props) => props.variant !== 'input' && props.theme.bgColor};
+    padding:${props => props.variant === 'input' ? '0.4rem' : props.variant === 'cancel' ? '0.4rem' : '0.2rem'};
     color: ${props => props.variant === 'input' && 'steelblue'};
   }
 `;

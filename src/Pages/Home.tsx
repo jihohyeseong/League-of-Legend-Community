@@ -3,7 +3,6 @@ import Chat from "../Components/Chat";
 import Communities from "../Components/Communities";
 import SideMenu from "../Components/SideMenu";
 
-
 const Wrapper = styled.div`
     display: flex;
     justify-content: center;
@@ -11,9 +10,6 @@ const Wrapper = styled.div`
     gap: 1rem;
     padding: 3rem;
 `;
-
-
-
 
 function Home() {
     return (

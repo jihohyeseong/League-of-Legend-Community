@@ -7,7 +7,7 @@ import img from "../Assets/Images/lol.jpeg"
 
 const Gnb = styled.nav`
   padding: 1rem;
-  background-color: #444;
+  background-color: ${(props) => props.theme.mainColor};
 `;
 
 const Itemlist = styled.ul`
@@ -35,11 +35,12 @@ const Img = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  cursor: pointer;
 `;
 
 const HomeTitle = styled.div`
   font-size: 3rem;
-  padding: 5rem;
+  padding: 7rem;
   text-align: center;
   color: white;
   background-image: url(${img});
@@ -70,7 +71,7 @@ function Header() {
         setLogin(true);
       })
       .catch(() => {
-        setLogin(false); 
+        setLogin(false);
       });
   }, [setLogin]);
 
@@ -87,7 +88,7 @@ function Header() {
           </ImgBox>
         </Itemlist>
       </Gnb >
-      <HomeTitle>Welcome League Of Legend Community</HomeTitle>
+      <HomeTitle>Welcome LoL Commnuity</HomeTitle>
     </>
 
 

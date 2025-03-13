@@ -41,13 +41,13 @@ const Btn = styled.button`
   justify-content: center;
   height: 3.5rem;
   width: 17rem;
-  background-color: #10a37f;
+  background-color: ${(props) => props.theme.mainColor};;
   color: #fff;
   margin: 1.5rem;
   border-radius: 0.7rem;
   padding: 2rem;
   font-size: 1.2rem;
-  border: 1px solid #10a37f;
+  border: 1px solid ${(props) => props.theme.mainColor};;
   cursor: pointer;
 `;
 
@@ -63,6 +63,14 @@ const InfoBox = styled.div`
   flex-direction: column;
   font-size: 1.2rem;
   padding: 1rem;
+  border-bottom:1px solid gray;
+  font-weight: bold;
+`;
+
+const ChatItem = styled.p`
+  font-size: 1.2rem;
+  padding: 1rem;
+  line-height: 1rem;
 `;
 
 const ChatBox = styled.div`
@@ -128,15 +136,12 @@ const Chat = () => {
   return (
     <Wrapper>
       <ChatBox>
-        {messages.length > 0 ? (
-          messages.map((msg) => (
-            <InfoBox key={msg.nickname}>
-              {msg.nickname} : {msg.content}
-            </InfoBox>
-          ))
-        ) : (
-          <InfoBox>실시간 채팅을 입력하세요</InfoBox>
-        )}
+        <InfoBox>실시간 채팅</InfoBox>
+        {messages.map((msg) => (
+          <ChatItem key={msg.nickname}>
+            {msg.nickname} : {msg.content}
+          </ChatItem>
+        ))}
       </ChatBox>
 
       <FormWrapper onSubmit={sendMessage}>
