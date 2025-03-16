@@ -28,6 +28,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.OK).body(dtoList);
     }
 
+    // 댓글 생성
     @PostMapping("/{communityId}/comment")
     public ResponseEntity<CommentDto> createComment(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
                                                     @PathVariable Long communityId,
@@ -35,6 +36,20 @@ public class CommentController {
 
         String username = customOAuth2User.getUsername();
         CommentDto dto = commentService.createComment(username, communityId, commentDto);
+
+        return (dto != null) ?
+                ResponseEntity.status(HttpStatus.CREATED).body(dto) :
+                ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+    // 대댓글 생성
+    @PostMapping("/{communityId}/{parentId}/comment")
+    public ResponseEntity<CommentDto> createReply(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+                                                    @PathVariable Long communityId,
+                                                    @PathVariable Long parentId,
+                                                    @RequestBody CommentDto commentDto){
+
+        String username = customOAuth2User.getUsername();
+        CommentDto dto = commentService.createReply(username, communityId, parentId, commentDto);
 
         return (dto != null) ?
                 ResponseEntity.status(HttpStatus.CREATED).body(dto) :

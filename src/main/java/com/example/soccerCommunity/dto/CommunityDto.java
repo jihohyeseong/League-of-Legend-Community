@@ -35,7 +35,8 @@ public class CommunityDto {
                 LocalDateTime.now(),
                 0L,
                 0L,
-                0L
+                0L,
+                null
         );
     }
 }
