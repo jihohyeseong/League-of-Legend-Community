@@ -13,15 +13,15 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommunityLikes {
+public class CommentLikes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "community_id", referencedColumnName = "id", nullable = false)
-    private Community community;
+    @JoinColumn(name = "comment_id", referencedColumnName = "id", nullable = false)
+    private Comment comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
@@ -31,11 +31,11 @@ public class CommunityLikes {
 
     private LocalDateTime createdAt;
 
-    public static CommunityLikes create(User user, Community community, String nickname) {
+    public static CommentLikes create(User user, Comment comment, String nickname) {
 
-        return new CommunityLikes(
+        return new CommentLikes(
                 null,
-                community,
+                comment,
                 user,
                 nickname,
                 LocalDateTime.now()
