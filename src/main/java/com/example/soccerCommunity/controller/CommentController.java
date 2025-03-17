@@ -19,7 +19,7 @@ public class CommentController {
 
         this.commentService = commentService;
     }
-
+    // 댓글 보기
     @GetMapping("/{communityId}/comment")
     public ResponseEntity<List<CommentDto>> getComments(@PathVariable Long communityId){
 
@@ -56,6 +56,7 @@ public class CommentController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    // 댓글 수정
     @PatchMapping("/{id}/comment")
     public ResponseEntity<CommentDto> updateComment(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
                                                     @PathVariable Long id,
@@ -69,6 +70,7 @@ public class CommentController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    // 댓글 삭제
     @DeleteMapping("/{id}/comment")
     public ResponseEntity<CommentDto> deleteComment(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
                                                     @PathVariable Long id){
@@ -77,8 +79,21 @@ public class CommentController {
         CommentDto dto = commentService.deleteComment(username, id);
 
         return (dto != null) ?
-                ResponseEntity.status(HttpStatus.CREATED).body(dto) :
+                ResponseEntity.status(HttpStatus.OK).body(dto) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    // 댓글 좋아요
+    @PostMapping("/{id}/likes")
+    public ResponseEntity<String> likesComment(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+                                                   @PathVariable Long id){
+
+        String username = customOAuth2User.getUsername();
+        boolean beforeLiked = commentService.checkBeforeLiked(username, id);
+
+        return beforeLiked ?
+                ResponseEntity.status(HttpStatus.OK).body("이 댓글을 좋아합니다.") :
+                ResponseEntity.status(HttpStatus.OK).body("이미 공감하셨습니다.");
     }
 
 }

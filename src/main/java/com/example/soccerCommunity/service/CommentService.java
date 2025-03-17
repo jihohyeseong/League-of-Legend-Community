@@ -2,10 +2,10 @@ package com.example.soccerCommunity.service;
 
 import com.example.soccerCommunity.dto.CommentDto;
 import com.example.soccerCommunity.entity.Comment;
+import com.example.soccerCommunity.entity.CommentLikes;
 import com.example.soccerCommunity.entity.Community;
-import com.example.soccerCommunity.repository.CommentRepository;
-import com.example.soccerCommunity.repository.CommunityRepository;
-import com.example.soccerCommunity.repository.UserInfoRepository;
+import com.example.soccerCommunity.entity.UserInfo;
+import com.example.soccerCommunity.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +18,14 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final UserInfoRepository userInfoRepository;
     private final CommunityRepository communityRepository;
+    private final CommentLikesRepository commentLikesRepository;
 
-    public CommentService(CommentRepository commentRepository, UserInfoRepository userInfoRepository, CommunityRepository communityRepository){
+    public CommentService(CommentRepository commentRepository, UserInfoRepository userInfoRepository, CommunityRepository communityRepository, CommentLikesRepository commentLikesRepository){
 
         this.commentRepository = commentRepository;
         this.userInfoRepository = userInfoRepository;
         this.communityRepository = communityRepository;
+        this.commentLikesRepository = commentLikesRepository;
     }
 
     public List<CommentDto> getComments(Long communityId) {
@@ -97,5 +99,21 @@ public class CommentService {
         }
 
         return CommentDto.toDto(comment);
+    }
+
+    public boolean checkBeforeLiked(String username, Long id) {
+
+        UserInfo userInfo = userInfoRepository.findByUser_Username(username);
+        Comment comment = commentRepository.findById(id).orElse(null);
+
+        if(!commentLikesRepository.existsByCommentIdAndUserId(id, userInfo.getUser().getId())){
+            CommentLikes commentLikes = CommentLikes.create(userInfo.getUser(), comment, userInfo.getNickname());
+            commentLikesRepository.save(commentLikes);
+            comment.setLikesCount(comment.getLikesCount() + 1L);
+            commentRepository.save(comment);
+        }
+        else return false;
+
+        return true;
     }
 }
