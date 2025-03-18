@@ -40,8 +40,6 @@ public class Comment {
 
     private Long likesCount; // 좋아요 수
 
-    private Long hatesCount; // 싫어요 수
-
     // 부모 댓글 참조 (대댓글 기능 추가)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -63,7 +61,6 @@ public class Comment {
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 0L,
-                0L,
                 null,
                 new ArrayList<>()
         );
@@ -79,7 +76,6 @@ public class Comment {
                 commentDto.getContent(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
-                0L,
                 0L,
                 parent, // 부모 설정
                 new ArrayList<>()

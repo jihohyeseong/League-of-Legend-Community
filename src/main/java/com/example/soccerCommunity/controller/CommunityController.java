@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 public class CommunityController {
@@ -20,6 +22,7 @@ public class CommunityController {
         this.communityService = communityService;
     }
 
+    // 게시글 리스트
     @GetMapping("/community")
     public ResponseEntity<Page<CommunityDto>> getAllCommunity(@RequestParam(defaultValue = "0") int page){
 
@@ -29,6 +32,7 @@ public class CommunityController {
         return ResponseEntity.status(HttpStatus.OK).body(communityPage);
     }
 
+    // 10추글 리스트
     @GetMapping("/community/popularity")
     public ResponseEntity<Page<CommunityDto>> getPopularityCommunity(@RequestParam(defaultValue = "0") int page){
 
@@ -38,6 +42,7 @@ public class CommunityController {
         return ResponseEntity.status(HttpStatus.OK).body(communityPage);
     }
 
+    // 게시글 검색
     @GetMapping("/community/search/{title}")
     public ResponseEntity<Page<CommunityDto>> communitySearchByTitle(@RequestParam(defaultValue = "0") int page,
                                                                      @PathVariable String title){
@@ -48,6 +53,7 @@ public class CommunityController {
         return ResponseEntity.status(HttpStatus.OK).body(communityPage);
     }
 
+    // 게시글 상세
     @GetMapping("/community/{id}")
     public ResponseEntity<CommunityDto> getCommunity(@PathVariable Long id){
 
@@ -58,6 +64,7 @@ public class CommunityController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    // 게시글 작성
     @PostMapping("/community")
     public ResponseEntity<CommunityDto> postCommunity(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
                                                       @RequestBody CommunityDto communityDto){
@@ -68,6 +75,7 @@ public class CommunityController {
         return ResponseEntity.status(HttpStatus.CREATED).body(dto);
     }
 
+    // 게시글 수정
     @PatchMapping("/community/{id}")
     public ResponseEntity<CommunityDto> patchCommunity(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
                                                        @PathVariable Long id,
@@ -81,6 +89,7 @@ public class CommunityController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    // 게시글 삭제
     @DeleteMapping("/community/{id}")
     public ResponseEntity<CommunityDto> deleteCommunity(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
                                                         @PathVariable Long id){
@@ -93,6 +102,7 @@ public class CommunityController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    // 게시글 추천
     @PostMapping("community/{id}/like")
     public ResponseEntity<String> communityLikeButton(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
                                                       @PathVariable Long id){
@@ -104,6 +114,17 @@ public class CommunityController {
         return beforeLiked ?
                 ResponseEntity.status(HttpStatus.OK).body("이 글을 좋아합니다.") :
                 ResponseEntity.status(HttpStatus.OK).body("이미 좋아요를 누르셨습니다.");
+    }
+
+    // 내가 쓴 글
+    @GetMapping("community/my")
+    public ResponseEntity<List<CommunityDto>> myCommunityList(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
+
+        String username = customOAuth2User.getUsername();
+
+        List<CommunityDto> myList = communityService.getMyCommunityList(username);
+
+        return ResponseEntity.status(HttpStatus.OK).body(myList);
     }
 
 }
