@@ -101,19 +101,31 @@ public class CommentService {
         return CommentDto.toDto(comment);
     }
 
-    public boolean checkBeforeLiked(String username, Long id) {
+    public boolean checkBeforeLiked(String username, Long id, String likeType) {
 
         UserInfo userInfo = userInfoRepository.findByUser_Username(username);
         Comment comment = commentRepository.findById(id).orElse(null);
 
         if(!commentLikesRepository.existsByCommentIdAndUserId(id, userInfo.getUser().getId())){
-            CommentLikes commentLikes = CommentLikes.create(userInfo.getUser(), comment, userInfo.getNickname());
+            CommentLikes commentLikes = CommentLikes.create(userInfo.getUser(), comment, userInfo.getNickname(), likeType);
             commentLikesRepository.save(commentLikes);
-            comment.setLikesCount(comment.getLikesCount() + 1L);
+            if(likeType.equals("like"))
+                comment.setLikesCount(comment.getLikesCount() + 1L);
+            else comment.setLikesCount((comment.getLikesCount()) - 1L);
             commentRepository.save(comment);
         }
         else return false;
 
         return true;
+    }
+
+    public List<CommentDto> getMyComments(String username) {
+
+        UserInfo userInfo = userInfoRepository.findByUser_Username(username);
+        String nickname = userInfo.getNickname();
+
+        List<Comment> comments = commentRepository.findByNickname(nickname);
+
+        return comments.stream().map(CommentDto::toDto).collect(Collectors.toList());
     }
 }

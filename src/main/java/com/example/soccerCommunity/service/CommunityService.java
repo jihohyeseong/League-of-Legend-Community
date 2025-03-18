@@ -12,6 +12,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class CommunityService {
 
@@ -119,5 +122,15 @@ public class CommunityService {
         Page<Community> communityPage = communityRepository.findByTitleContainingIgnoreCase(title, pageRequest);
 
         return communityPage.map(Community::toDto);
+    }
+
+    public List<CommunityDto> getMyCommunityList(String username) {
+
+        UserInfo userInfo = userInfoRepository.findByUser_Username(username);
+        String nickname = userInfo.getNickname();
+
+        List<Community> communities = communityRepository.findByNickname(nickname);
+
+        return communities.stream().map(Community::toDto).collect(Collectors.toList());
     }
 }

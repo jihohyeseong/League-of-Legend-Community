@@ -83,17 +83,28 @@ public class CommentController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
-    // 댓글 좋아요
-    @PostMapping("/{id}/likes")
-    public ResponseEntity<String> likesComment(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
-                                                   @PathVariable Long id){
+    // 내가 쓴 댓글
+    @GetMapping("/comment/my")
+    public ResponseEntity<List<CommentDto>> myComments(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
 
         String username = customOAuth2User.getUsername();
-        boolean beforeLiked = commentService.checkBeforeLiked(username, id);
+        List<CommentDto> myComments = commentService.getMyComments(username);
+
+        return ResponseEntity.status(HttpStatus.OK).body(myComments);
+    }
+
+    // 댓글 좋아요
+    @PostMapping("/{id}/like")
+    public ResponseEntity<String> likesComment(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+                                               @PathVariable Long id,
+                                               @RequestParam String likeType){
+
+        String username = customOAuth2User.getUsername();
+        boolean beforeLiked = commentService.checkBeforeLiked(username, id, likeType);
 
         return beforeLiked ?
-                ResponseEntity.status(HttpStatus.OK).body("이 댓글을 좋아합니다.") :
-                ResponseEntity.status(HttpStatus.OK).body("이미 공감하셨습니다.");
+                ResponseEntity.status(HttpStatus.OK).body("이 댓글을 " + (likeType.equals("like") ? "좋아합니다." : "싫어합니다.")) :
+                ResponseEntity.status(HttpStatus.OK).body("이미 공감한 댓글입니다.");
     }
 
 }

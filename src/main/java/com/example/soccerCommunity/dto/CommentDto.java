@@ -25,7 +25,6 @@ public class CommentDto {
     private LocalDateTime createdAt; // 생성일자
     private LocalDateTime updatedAt; // 수정일자
     private Long likesCount; // 좋아요 수
-    private Long hatesCount; // 싫어요 수
     private List<CommentDto> children = new ArrayList<>();
 
     public static CommentDto toDto(Comment comment) {
@@ -39,7 +38,6 @@ public class CommentDto {
                 comment.getCreatedAt(),
                 comment.getUpdatedAt(),
                 comment.getLikesCount(),
-                comment.getHatesCount(),
                 comment.getChildren().stream().map(CommentDto::toDto).collect(Collectors.toList())
         );
     }

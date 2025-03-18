@@ -29,15 +29,18 @@ public class CommentLikes {
 
     private String nickname;
 
+    private String likesType;
+
     private LocalDateTime createdAt;
 
-    public static CommentLikes create(User user, Comment comment, String nickname) {
+    public static CommentLikes create(User user, Comment comment, String nickname, String likesType) {
 
         return new CommentLikes(
                 null,
                 comment,
                 user,
                 nickname,
+                likesType,
                 LocalDateTime.now()
         );
     }
