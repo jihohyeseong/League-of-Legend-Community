@@ -46,8 +46,11 @@ public class Comment {
     private Comment parent;
 
     // 자식 댓글 리스트 (부모 댓글이 삭제되어도 자식 댓글 유지)
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL)
     private List<Comment> children = new ArrayList<>();
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CommentLikes> likes = new ArrayList<>();
 
     // 일반 댓글
     public static Comment toEntity(String nickname, Community community, CommentDto commentDto) {
@@ -62,7 +65,8 @@ public class Comment {
                 LocalDateTime.now(),
                 0L,
                 null,
-                new ArrayList<>()
+                new ArrayList<>(),
+                null
         );
     }
 
@@ -78,7 +82,8 @@ public class Comment {
                 LocalDateTime.now(),
                 0L,
                 parent, // 부모 설정
-                new ArrayList<>()
+                new ArrayList<>(),
+                null
         );
         parent.children.add(reply); // 부모 댓글에 대댓글 추가
         return reply;
