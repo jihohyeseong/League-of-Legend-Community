@@ -41,7 +41,7 @@ public class Community {
     private Long commentsCount; // 댓글 수
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    private List<CommunityLikes> communityLikes = new ArrayList<>();
 
     public static CommunityDto toDto(Community community) {
 

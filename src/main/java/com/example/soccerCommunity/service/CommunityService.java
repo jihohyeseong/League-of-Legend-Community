@@ -1,9 +1,11 @@
 package com.example.soccerCommunity.service;
 
 import com.example.soccerCommunity.dto.CommunityDto;
+import com.example.soccerCommunity.entity.Comment;
 import com.example.soccerCommunity.entity.Community;
 import com.example.soccerCommunity.entity.CommunityLikes;
 import com.example.soccerCommunity.entity.UserInfo;
+import com.example.soccerCommunity.repository.CommentRepository;
 import com.example.soccerCommunity.repository.CommunityLikesRepository;
 import com.example.soccerCommunity.repository.CommunityRepository;
 import com.example.soccerCommunity.repository.UserInfoRepository;
@@ -21,14 +23,17 @@ public class CommunityService {
     private final CommunityRepository communityRepository;
     private final UserInfoRepository userInfoRepository;
     private final CommunityLikesRepository communityLikesRepository;
+    private final CommentRepository commentRepository;
 
     public CommunityService(CommunityRepository communityRepository,
                             UserInfoRepository userInfoRepository,
-                            CommunityLikesRepository communityLikesRepository){
+                            CommunityLikesRepository communityLikesRepository,
+                            CommentRepository commentRepository){
 
         this.communityRepository = communityRepository;
         this.userInfoRepository = userInfoRepository;
         this.communityLikesRepository = communityLikesRepository;
+        this.commentRepository = commentRepository;
     }
 
     public Page<CommunityDto> getCommunityPage(int page, int pageSize) {
@@ -82,15 +87,19 @@ public class CommunityService {
 
         UserInfo userInfo = userInfoRepository.findByUser_Username(username);
         Community target = communityRepository.findById(id).orElse(null);
+        List<Comment> comments = commentRepository.findByCommunityId(id);
+
         if(target == null || !target.getNickname().equals(userInfo.getNickname())){
             return null;
         }
 
+        commentRepository.deleteAll(comments);
         communityRepository.delete(target);
 
         return Community.toDto(target);
     }
 
+    @Transactional
     public boolean checkBeforeLiked(String username, Long id) {
 
         UserInfo userInfo = userInfoRepository.findByUser_Username(username);
