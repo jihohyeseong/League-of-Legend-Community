@@ -52,38 +52,44 @@ public class Comment {
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentLikes> likes = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_info_id", referencedColumnName = "id")
+    private UserInfo userInfo;
+
     // 일반 댓글
-    public static Comment toEntity(String nickname, Community community, CommentDto commentDto) {
+    public static Comment toEntity(UserInfo userInfo, Community community, CommentDto commentDto) {
 
         return new Comment(
                 null,
                 community,
                 community.getTitle(),
-                nickname,
+                userInfo.getNickname(),
                 commentDto.getContent(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 0L,
                 null,
                 new ArrayList<>(),
-                null
+                null,
+                userInfo
         );
     }
 
     // 대댓글
-    public static Comment toReplyEntity(String nickname, Community community, CommentDto commentDto, Comment parent) {
+    public static Comment toReplyEntity(UserInfo userInfo, Community community, CommentDto commentDto, Comment parent) {
         Comment reply = new Comment(
                 null,
                 community,
                 community.getTitle(),
-                nickname,
+                userInfo.getNickname(),
                 commentDto.getContent(),
                 LocalDateTime.now(),
                 LocalDateTime.now(),
                 0L,
                 parent, // 부모 설정
                 new ArrayList<>(),
-                null
+                null,
+                userInfo
         );
         parent.children.add(reply); // 부모 댓글에 대댓글 추가
         return reply;

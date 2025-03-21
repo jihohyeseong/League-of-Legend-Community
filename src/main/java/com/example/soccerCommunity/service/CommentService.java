@@ -38,13 +38,13 @@ public class CommentService {
     @Transactional
     public CommentDto createComment(String username, Long id, CommentDto commentDto) {
 
-        String nickname = userInfoRepository.findByUser_Username(username).getNickname();
+        UserInfo userInfo = userInfoRepository.findByUser_Username(username);
         Community community = communityRepository.findById(id).orElse(null);
         if(community == null)
             return null;
         community.setCommentsCount(community.getCommentsCount() + 1L);
         communityRepository.save(community);
-        Comment comment = Comment.toEntity(nickname, community, commentDto);
+        Comment comment = Comment.toEntity(userInfo, community, commentDto);
         Comment created = commentRepository.save(comment);
 
         return CommentDto.toDto(created);
@@ -52,13 +52,17 @@ public class CommentService {
 
     @Transactional
     public CommentDto createReply(String username, Long communityId, Long parentId, CommentDto commentDto) {
-        String nickname = userInfoRepository.findByUser_Username(username).getNickname();
+
+        UserInfo userInfo = userInfoRepository.findByUser_Username(username);
         Community community = communityRepository.findById(communityId).orElse(null);
         Comment parentComment = commentRepository.findById(parentId).orElse(null);
 
         if (community == null || parentComment == null) return null;
 
-        Comment reply = Comment.toReplyEntity(nickname, community, commentDto, parentComment);
+        community.setCommentsCount(community.getCommentsCount() + 1L);
+        communityRepository.save(community);
+
+        Comment reply = Comment.toReplyEntity(userInfo, community, commentDto, parentComment);
         Comment createdReply = commentRepository.save(reply);
 
         return CommentDto.toDto(createdReply);
