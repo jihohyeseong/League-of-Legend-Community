@@ -21,6 +21,7 @@ public class CommentDto {
     private Long communityId;
     private String communityTitle;
     private String nickname;
+    private String imageUrl;
     private String content;
     private LocalDateTime createdAt; // 생성일자
     private LocalDateTime updatedAt; // 수정일자
@@ -34,6 +35,7 @@ public class CommentDto {
                 comment.getCommunity().getId(),
                 comment.getCommunityTitle(),
                 comment.getNickname(),
+                comment.getUserInfo().getImageUrl(),
                 comment.getContent(),
                 comment.getCreatedAt(),
                 comment.getUpdatedAt(),
