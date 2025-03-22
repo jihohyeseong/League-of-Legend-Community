@@ -14,4 +14,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findByCommunity_IdIn(List<Long> communityIds);
 
     List<Comment> findByCommunityIdAndParentIsNullOrderByCreatedAtAsc(Long communityId);
+
+    List<Comment> findByCommunityIdAndParentIsNullOrderByLikesCountDesc(Long communityId);
 }
