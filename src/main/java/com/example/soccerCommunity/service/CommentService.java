@@ -132,4 +132,11 @@ public class CommentService {
 
         return comments.stream().map(CommentDto::toDto).collect(Collectors.toList());
     }
+
+    public List<CommentDto> getPopularityComments(Long communityId) {
+
+        List<Comment> allComments = commentRepository.findByCommunityIdAndParentIsNullOrderByLikesCountDesc(communityId);
+
+        return allComments.stream().map(CommentDto::toDto).collect(Collectors.toList());
+    }
 }
