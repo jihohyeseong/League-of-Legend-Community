@@ -9,6 +9,6 @@ public class MessageService {
 
     public MessageResponseDto processMessage(MessageRequestDto requestDto) {
 
-        return new MessageResponseDto(requestDto.getNickname(), requestDto.getContent());
+        return new MessageResponseDto(requestDto.getNickname(), requestDto.getContent(), requestDto.getCreatedAt());
     }
 }
