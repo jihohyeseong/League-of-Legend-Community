@@ -127,4 +127,14 @@ public class CommunityController {
         return ResponseEntity.status(HttpStatus.OK).body(myList);
     }
 
+    // 내가 추천한 게시글
+    public ResponseEntity<List<CommunityDto>> myCommunityLikes(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
+
+        String username = customOAuth2User.getUsername();
+
+        List<CommunityDto> myList = communityService.getMyCommunityLikes(username);
+
+        return ResponseEntity.status(HttpStatus.OK).body(myList);
+    }
+
 }
