@@ -12,4 +12,5 @@ public interface CommunityLikesRepository extends JpaRepository<CommunityLikes, 
     void deleteByCommunity_IdIn(List<Long> communityIds);
 
     List<CommunityLikes> findByNickname(String username);
+
 }

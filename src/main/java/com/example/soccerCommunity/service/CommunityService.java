@@ -142,4 +142,11 @@ public class CommunityService {
 
         return communities.stream().map(Community::toDto).collect(Collectors.toList());
     }
+
+    public List<CommunityDto> getMyCommunityLikes(String username) {
+
+        UserInfo userInfo = userInfoRepository.findByUser_Username(username);
+        String nickname = userInfo.getNickname();
+
+    }
 }
