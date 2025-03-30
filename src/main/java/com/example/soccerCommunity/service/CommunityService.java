@@ -147,6 +147,13 @@ public class CommunityService {
 
         UserInfo userInfo = userInfoRepository.findByUser_Username(username);
         String nickname = userInfo.getNickname();
+        List<Long> communityIds = communityLikesRepository.findByNickname(nickname)
+                .stream()
+                .map(CommunityLikes::getId)
+                .toList();
 
+        List<Community> communities = communityRepository.findAllById(communityIds);
+
+        return communities.stream().map(Community::toDto).collect(Collectors.toList());
     }
 }
