@@ -17,5 +17,13 @@ public interface CommunityRepository extends JpaRepository<Community, Long> {
 
     Page<Community> findByTitleContainingIgnoreCase(String title, Pageable pageable);
 
+    Page<Community> findByNicknameContainingIgnoreCase(String nickname, Pageable pageable);
+
+    Page<Community> findByContentContainingIgnoreCase(String content, Pageable pageable);
+
+    Page<Community> findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(String title, String content, Pageable pageable);
+
     List<Community> findByNickname(String nickname);
+
+    List<Community> findByCategory(String category);
 }

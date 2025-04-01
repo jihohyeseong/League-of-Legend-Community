@@ -11,6 +11,7 @@ import com.example.soccerCommunity.repository.CommunityRepository;
 import com.example.soccerCommunity.repository.UserInfoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -155,5 +156,49 @@ public class CommunityService {
         List<Community> communities = communityRepository.findAllById(communityIds);
 
         return communities.stream().map(Community::toDto).collect(Collectors.toList());
+    }
+
+    public List<CommunityDto> getCategoryList(String category) {
+
+        List<Community> communities = communityRepository.findByCategory(category);
+
+        return communities.stream().map(Community::toDto).collect(Collectors.toList());
+    }
+
+    public Page<CommunityDto> searchByContent(int page, int pageSize, String content) {
+
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        Page<Community> communityPage = communityRepository.findByContentContainingIgnoreCase(content, pageRequest);
+
+        return communityPage.map(Community::toDto);
+    }
+
+    public Page<CommunityDto> searchByNickname(int page, int pageSize, String nickname) {
+
+        PageRequest pageRequest = PageRequest.of(page, pageSize);
+        Page<Community> communityPage = communityRepository.findByNicknameContainingIgnoreCase(nickname, pageRequest);
+
+        return communityPage.map(Community::toDto);
+    }
+
+    public Page<CommunityDto> searchByTitleOrContent(int page, int pageSize, String title, String content) {
+
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        if (title != null && content != null) {
+            return communityRepository
+                    .findByTitleContainingIgnoreCaseOrContentContainingIgnoreCase(title, content, pageable)
+                    .map(Community::toDto);
+        } else if (title != null) {
+            return communityRepository
+                    .findByTitleContainingIgnoreCase(title, pageable)
+                    .map(Community::toDto);
+        } else if (content != null) {
+            return communityRepository
+                    .findByContentContainingIgnoreCase(content, pageable)
+                    .map(Community::toDto);
+        } else {
+            return Page.empty();
+        }
     }
 }

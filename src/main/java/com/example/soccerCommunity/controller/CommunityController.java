@@ -42,13 +42,47 @@ public class CommunityController {
         return ResponseEntity.status(HttpStatus.OK).body(communityPage);
     }
 
-    // 게시글 검색
-    @GetMapping("/community/search/{title}")
+    // 제목으로 게시글 검색
+    @GetMapping("/community/search1/{title}")
     public ResponseEntity<Page<CommunityDto>> communitySearchByTitle(@RequestParam(defaultValue = "0") int page,
                                                                      @PathVariable String title){
 
         int pageSize = 20;
         Page<CommunityDto> communityPage = communityService.searchByTitle(page, pageSize, title);
+
+        return ResponseEntity.status(HttpStatus.OK).body(communityPage);
+    }
+
+    // 내용으로 게시글 검색
+    @GetMapping("/community/search2/{content}")
+    public ResponseEntity<Page<CommunityDto>> communitySearchByContent(@RequestParam(defaultValue = "0") int page,
+                                                                     @PathVariable String content){
+
+        int pageSize = 20;
+        Page<CommunityDto> communityPage = communityService.searchByContent(page, pageSize, content);
+
+        return ResponseEntity.status(HttpStatus.OK).body(communityPage);
+    }
+
+    // 작성자로 게시글 검색
+    @GetMapping("/community/search3/{nickname}")
+    public ResponseEntity<Page<CommunityDto>> communitySearchByNickname(@RequestParam(defaultValue = "0") int page,
+                                                                       @PathVariable String nickname){
+
+        int pageSize = 20;
+        Page<CommunityDto> communityPage = communityService.searchByNickname(page, pageSize, nickname);
+
+        return ResponseEntity.status(HttpStatus.OK).body(communityPage);
+    }
+
+    // 제목 + 내용으로 게시글 검색
+    @GetMapping("/community/search")
+    public ResponseEntity<Page<CommunityDto>> communitySearchByNickname(@RequestParam(defaultValue = "0") int page,
+                                                                        @RequestParam(required = false) String title,
+                                                                        @RequestParam(required = false) String content){
+
+        int pageSize = 20;
+        Page<CommunityDto> communityPage = communityService.searchByTitleOrContent(page, pageSize, title, content);
 
         return ResponseEntity.status(HttpStatus.OK).body(communityPage);
     }
@@ -103,7 +137,7 @@ public class CommunityController {
     }
 
     // 게시글 추천
-    @PostMapping("community/{id}/like")
+    @PostMapping("/community/{id}/like")
     public ResponseEntity<String> communityLikeButton(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
                                                       @PathVariable Long id){
 
@@ -117,7 +151,7 @@ public class CommunityController {
     }
 
     // 내가 쓴 글
-    @GetMapping("community/my")
+    @GetMapping("/community/my")
     public ResponseEntity<List<CommunityDto>> myCommunityList(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
 
         String username = customOAuth2User.getUsername();
@@ -128,6 +162,7 @@ public class CommunityController {
     }
 
     // 내가 추천한 게시글
+    @GetMapping("/community/likes")
     public ResponseEntity<List<CommunityDto>> myCommunityLikes(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
 
         String username = customOAuth2User.getUsername();
@@ -135,6 +170,15 @@ public class CommunityController {
         List<CommunityDto> myList = communityService.getMyCommunityLikes(username);
 
         return ResponseEntity.status(HttpStatus.OK).body(myList);
+    }
+
+    // 카테고리별 검색
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<CommunityDto>> communityCategory(@PathVariable String category){
+
+        List<CommunityDto> list = communityService.getCategoryList(category);
+
+        return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
 }

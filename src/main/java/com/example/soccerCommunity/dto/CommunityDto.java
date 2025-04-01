@@ -23,6 +23,7 @@ public class CommunityDto {
     private Long viewsCount; // 조회수
     private Long likesCount; // 좋아요 수
     private Long commentsCount; // 댓글 수
+    private String category; // 카테고리
 
     public static Community toEntity(String nickname, CommunityDto communityDto) {
 
@@ -36,6 +37,7 @@ public class CommunityDto {
                 0L,
                 0L,
                 0L,
+                communityDto.getCategory(),
                 null
         );
     }
