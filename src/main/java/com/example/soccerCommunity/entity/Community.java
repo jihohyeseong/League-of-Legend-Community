@@ -26,7 +26,6 @@ public class Community {
 
     private String title;
 
-    @Lob
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
@@ -39,6 +38,8 @@ public class Community {
     private Long likesCount; // 좋아요 수
 
     private Long commentsCount; // 댓글 수
+
+    private String category; // 카테고리
 
     @OneToMany(mappedBy = "community", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommunityLikes> communityLikes = new ArrayList<>();
@@ -54,7 +55,8 @@ public class Community {
                 community.getUpdatedAt(),
                 community.getViewsCount(),
                 community.getLikesCount(),
-                community.getCommentsCount()
+                community.getCommentsCount(),
+                community.getCategory()
         );
     }
 
@@ -65,6 +67,8 @@ public class Community {
             this.title = community.getTitle();
         if(community.getContent() != null)
             this.content = community.getContent();
+        if(community.getCategory() != null)
+            this.category = community.getCategory();
         this.updatedAt = LocalDateTime.now();
     }
 }
