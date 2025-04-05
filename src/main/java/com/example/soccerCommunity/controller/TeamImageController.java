@@ -20,6 +20,7 @@ public class TeamImageController {
         this.teamImageService = teamImageService;
     }
 
+    // 팀 이미지 가져오기
     @GetMapping("/image/{id}")
     public ResponseEntity<TeamImageDto> getTeamImage(@PathVariable Long id){
 
@@ -30,6 +31,7 @@ public class TeamImageController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    // 팀 이미지 리스트
     @GetMapping("/image/list")
     public ResponseEntity<List<TeamImageDto>> getTeamImageList(){
 
