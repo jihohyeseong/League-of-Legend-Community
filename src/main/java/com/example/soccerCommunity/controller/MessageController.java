@@ -17,6 +17,7 @@ public class MessageController {
         this.messageService = messageService;
     }
 
+    // 실시간 채팅
     @MessageMapping("/chat")
     @SendTo("/topic/chat")
     public MessageResponseDto sendChatMessage(MessageRequestDto requestDto) {
