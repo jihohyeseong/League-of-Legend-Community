@@ -22,6 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    // 현재 로그인중인 유저
     @GetMapping("/auth/me")
     public ResponseEntity<Map<String, Object>> getCurrentUser(@AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
         if (customOAuth2User == null) {
@@ -34,6 +35,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    // 마이페이지
     @GetMapping("/mypage")
     public ResponseEntity<UserDto> mypage(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
 
