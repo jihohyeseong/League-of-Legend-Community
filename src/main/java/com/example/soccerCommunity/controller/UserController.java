@@ -47,6 +47,7 @@ public class UserController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    // 마이페이지
     @GetMapping("/info")
     public ResponseEntity<UserInfoDto> myInfo(@AuthenticationPrincipal CustomOAuth2User customOAuth2User){
 
@@ -58,6 +59,7 @@ public class UserController {
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
+    // 내정보 저장
     @PostMapping("/info")
     public ResponseEntity<UserInfoDto> setInfo(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
                                                @RequestBody UserInfoDto userInfoDto){
