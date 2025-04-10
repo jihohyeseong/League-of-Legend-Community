@@ -98,7 +98,7 @@ public class UserService {
     public UserInfoDto patchTeamInfo(String username, UserInfoDto userInfoDto) {
 
         UserInfo userInfo = userInfoRepository.findByUser_Username(username);
-        userInfo.setNickname(userInfoDto.getImageUrl());
+        userInfo.setImageUrl(userInfoDto.getImageUrl());
         UserInfo patched = userInfoRepository.save(userInfo);
 
         return UserInfo.toDto(patched);
