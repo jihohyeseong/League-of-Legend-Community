@@ -96,12 +96,11 @@
 
 ## 구현화면
 1. 로그인 모달창
-![로그인모달](https://github.com/user-attachments/assets/24dfa360-ec48-4ca6-8b57-bdc179415b99)
+![로그인](https://github.com/user-attachments/assets/44926421-7e3a-4648-a3bf-b6ccb0645f68)
 2. 메인화면
-![메인화면with실시간 채팅](https://github.com/user-attachments/assets/cd625309-c5a1-450f-95d5-2776d7511f63)
+![팅메인화면 실시간채](https://github.com/user-attachments/assets/ab62c13c-a163-4189-8c78-d05b2eed81d9)
 3. 상세페이지
-![상세페이지1](https://github.com/user-attachments/assets/2aed1c43-6e94-4cd3-9381-09d147425bc3)
-![상세페이지2](https://github.com/user-attachments/assets/b17a158d-e485-4c4e-88f6-6ce1b8013d30)
+![지상세페이](https://github.com/user-attachments/assets/4fccd067-f5dd-4002-97cf-3498e21e1b20)
 4. 글 작성
 ![글작성](https://github.com/user-attachments/assets/51c8a4b5-2934-4d8d-930c-8790cd11a948)
 5. 마이페이지
