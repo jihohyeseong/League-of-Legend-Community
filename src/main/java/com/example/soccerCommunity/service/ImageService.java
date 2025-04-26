@@ -17,37 +17,35 @@ public class ImageService {
 
     private final S3Config s3Config;
 
-    public ImageService(S3Config s3Config){
-
-        this.s3Config = s3Config;
-    }
-
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    private String localLocation = "C:\\image\\";
+    public ImageService(S3Config s3Config){
+        this.s3Config = s3Config;
+    }
 
     public String imageUpload(MultipartRequest request) throws IOException {
-
         MultipartFile file = request.getFile("upload"); // upload 키 값을 가진 파일 꺼내기
 
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("업로드할 파일이 없습니다.");
+        }
+
         String fileName = file.getOriginalFilename();
-        String ext = fileName.substring(fileName.indexOf(".")); // 확장자명
+        String ext = fileName.substring(fileName.lastIndexOf(".")); // 확장자명
+        String uuidFileName = UUID.randomUUID() + ext; // 파일명 중복 방지
 
-        String uuidFileName = UUID.randomUUID() + ext; // 파일이름 재정의. 같으면 덮어쓰기가 되기 때문
-        String localPath = localLocation + uuidFileName;
+        // S3에 바로 업로드
+        s3Config.amazonS3Client().putObject(
+                bucket,
+                uuidFileName,
+                file.getInputStream(),
+                null // 메타데이터 설정 가능, 여기서는 생략
+        );
+        // 퍼블릭 읽기 권한 추가
+        s3Config.amazonS3Client().setObjectAcl(bucket, uuidFileName, CannedAccessControlList.PublicRead);
 
-        // 로컬 서버에 일단 저장
-        File localFile = new File(localPath);
-        file.transferTo(localFile);
-
-        // s3에 저장
-        s3Config.amazonS3Client().putObject(new PutObjectRequest(bucket, uuidFileName, localFile).withCannedAcl(CannedAccessControlList.PublicRead));
-        String s3Url = s3Config.amazonS3Client().getUrl(bucket, uuidFileName).toString();
-
-        // 로컬에 저장한 이미지 삭제
-        localFile.delete();
-
-        return s3Url;
+        // 업로드된 파일 URL 반환
+        return s3Config.amazonS3Client().getUrl(bucket, uuidFileName).toString();
     }
 }
