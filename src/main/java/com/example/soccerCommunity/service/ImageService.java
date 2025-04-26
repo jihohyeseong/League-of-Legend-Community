@@ -1,14 +1,12 @@
 package com.example.soccerCommunity.service;
 
 import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.soccerCommunity.config.S3Config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartRequest;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
