@@ -91,7 +91,7 @@
 <br/>
 
 ## 프로젝트 구조
-![프로젝트 구조](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/image/%EA%B8%B0%EB%8A%A5%EA%B5%AC%EC%84%B1%EB%8F%84.png)
+![프로젝트 구조](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EA%B8%B0%EB%8A%A5%EA%B5%AC%EC%84%B1.png)
 <br/>
 
 ## 구현화면
