@@ -1,6 +1,6 @@
 # League of Legend Community (게임 커뮤니티)
 2024 3rd Project
- [🖥️[PC화면 시연동영상](https://youtu.be/1jigB8RXR2E)
+ <h3>🖥️[PC화면 시연동영상](https://youtu.be/1jigB8RXR2E)</h3>
 <h3><a href="https://www.notion.so/1a71563ef7ee804f9ca4d326716b3402?v=1a71563ef7ee8144b95b000c8162b838">
       📜 REST API 명세서</a></h3>
 <br/>
