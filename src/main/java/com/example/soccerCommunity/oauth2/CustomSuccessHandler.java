@@ -38,20 +38,17 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         GrantedAuthority auth = iterator.next();
         String role = auth.getAuthority();
 
-        String token = jwtUtil.createJwt(username, role, 60*60*1000L);
+        String token = jwtUtil.createJwt(username, role, 24*60*60*1000L);
 
-        response.addCookie(createCookie("Authorization", token));
-        response.sendRedirect("http://localhost:5173/0");
+        addSameSiteCookie(response, "Authorization", token);
+        response.sendRedirect("https://react-lol-community.vercel.app/0");
     }
 
-    private Cookie createCookie(String key, String value) {
+    private void addSameSiteCookie(HttpServletResponse response, String name, String value) {
 
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(60*60*1000);
-        cookie.setSecure(true);
-        cookie.setPath("/");
-        cookie.setHttpOnly(true);
-
-        return cookie;
+        // SameSite=None; Secure 명시적으로 추가
+        response.addHeader("Set-Cookie",
+                String.format("%s=%s; Max-Age=%d; Path=/; Secure; HttpOnly; SameSite=None",
+                        name, value, 24 * 60 * 60));
     }
 }

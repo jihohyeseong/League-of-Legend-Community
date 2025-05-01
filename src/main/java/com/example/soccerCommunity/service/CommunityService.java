@@ -150,7 +150,8 @@ public class CommunityService {
         String nickname = userInfo.getNickname();
         List<Long> communityIds = communityLikesRepository.findByNickname(nickname)
                 .stream()
-                .map(CommunityLikes::getId)
+                .map(CommunityLikes::getCommunity)
+                .map(Community::getId)
                 .toList();
 
         List<Community> communities = communityRepository.findAllById(communityIds);

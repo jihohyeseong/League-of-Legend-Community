@@ -19,28 +19,27 @@ public class CommentDto {
 
     private Long id;
     private Long communityId;
-    private String communityTitle;
     private String nickname;
     private String imageUrl;
     private String content;
-    private LocalDateTime createdAt; // 생성일자
-    private LocalDateTime updatedAt; // 수정일자
-    private Long likesCount; // 좋아요 수
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private Long likesCount;
+    private Long parentId; // 트리 구성에 필요
     private List<CommentDto> children = new ArrayList<>();
 
-    public static CommentDto toDto(Comment comment) {
-
+    public static CommentDto toDto(Comment c) {
         return new CommentDto(
-                comment.getId(),
-                comment.getCommunity().getId(),
-                comment.getCommunityTitle(),
-                comment.getNickname(),
-                comment.getUserInfo().getImageUrl(),
-                comment.getContent(),
-                comment.getCreatedAt(),
-                comment.getUpdatedAt(),
-                comment.getLikesCount(),
-                comment.getChildren().stream().map(CommentDto::toDto).collect(Collectors.toList())
+                c.getId(),
+                c.getCommunity().getId(),
+                c.getNickname(),
+                c.getUserInfo().getImageUrl(),
+                c.getContent(),
+                c.getCreatedAt(),
+                c.getUpdatedAt(),
+                c.getLikesCount(),
+                c.getParent() != null ? c.getParent().getId() : null,
+                new ArrayList<>()
         );
     }
 }

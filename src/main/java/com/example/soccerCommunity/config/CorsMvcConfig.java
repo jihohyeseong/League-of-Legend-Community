@@ -12,6 +12,7 @@ public class CorsMvcConfig implements WebMvcConfigurer {
 
         corsRegistry.addMapping("/**")
                 .exposedHeaders("Set-Cookie")
-                .allowedOrigins("http://localhost:5173");
+                .allowCredentials(true)
+                .allowedOrigins("https://react-lol-community.vercel.app");
     }
 }

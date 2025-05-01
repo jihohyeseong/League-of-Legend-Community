@@ -51,11 +51,11 @@ public class SecurityConfig {
 
                         CorsConfiguration configuration = new CorsConfiguration();
 
-                        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:5173"));
+                        configuration.setAllowedOrigins(Collections.singletonList("https://react-lol-community.vercel.app"));
                         configuration.setAllowedMethods(Collections.singletonList("*"));
                         configuration.setAllowCredentials(true);
                         configuration.setAllowedHeaders(Collections.singletonList("*"));
-                        configuration.setMaxAge(3600L);
+                        configuration.setMaxAge(24*3600L);
 
                         configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
                         configuration.setExposedHeaders(Collections.singletonList("Authorization"));
@@ -97,10 +97,9 @@ public class SecurityConfig {
                     @Override
                     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
                         // 쿠키 삭제
-                        Cookie cookie = new Cookie("Authorization", null);
-                        cookie.setPath("/");
-                        cookie.setMaxAge(0); // 쿠키 삭제
-                        response.addCookie(cookie);
+                        response.addHeader("Set-Cookie",
+                                String.format("%s=%s; Max-Age=%d; Path=/; Secure; HttpOnly; SameSite=None",
+                                        "Authorization", "", 0));
                         response.setStatus(HttpServletResponse.SC_OK);
                     }
                 })

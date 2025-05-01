@@ -19,6 +19,7 @@ public class ImageService {
     private String bucket;
 
     public ImageService(S3Config s3Config){
+
         this.s3Config = s3Config;
     }
 

@@ -119,10 +119,15 @@ public class UserService {
 
         // 2. 좋아요(CommunityLikes) 데이터 먼저 삭제
         communityLikesRepository.deleteByCommunity_IdIn(communityIds);
+        List<CommunityLikes> likes = communityLikesRepository.findByNickname(nickname);
+        communityLikesRepository.deleteAll(likes);
 
         // 3. 해당 커뮤니티 ID를 참조하는 모든 댓글 삭제
         List<Comment> comments = commentRepository.findByCommunity_IdIn(communityIds);
         commentRepository.deleteAll(comments);
+
+        List<Comment> myComments = commentRepository.findByNickname(nickname);
+        commentRepository.deleteAll(myComments);
 
         // 4. 유저가 작성한 커뮤니티 게시글 삭제
         List<Community> communities = communityRepository.findByNickname(nickname);
