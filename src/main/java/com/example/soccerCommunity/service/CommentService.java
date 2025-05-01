@@ -186,8 +186,26 @@ public class CommentService {
 
     public List<CommentDto> getPopularityComments(Long communityId) {
 
-        List<Comment> allComments = commentRepository.findWithChildrenAndAssociationsByCommunityIdOrderByLikesCount(communityId);
+        List<Comment> comments = commentRepository.findAllCommentsWithUserInfoOrderByLikesCount(communityId);
+        Map<Long, CommentDto> map = new HashMap<>();
+        List<CommentDto> roots = new ArrayList<>();
 
-        return allComments.stream().map(CommentDto::toDto).collect(Collectors.toList());
+        for (Comment c : comments) {
+            CommentDto dto = CommentDto.toDto(c);
+            map.put(dto.getId(), dto);
+        }
+
+        for (CommentDto dto : map.values()) {
+            if (dto.getParentId() != null) {
+                CommentDto parent = map.get(dto.getParentId());
+                if (parent != null) {
+                    parent.getChildren().add(dto);
+                }
+            } else {
+                roots.add(dto);
+            }
+        }
+
+        return roots;
     }
 }
