@@ -206,6 +206,9 @@ public class CommentService {
             }
         }
 
+        // 부모 댓글을 likesCount DESC로 정렬
+        roots.sort(Comparator.comparing(CommentDto::getLikesCount).reversed());
+
         return roots;
     }
 }
