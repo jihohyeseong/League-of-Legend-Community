@@ -98,26 +98,40 @@
 ## 구현화면
 + 로그인 모달창<br/><br/>
 ![로그인](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140005.png)
-
+<br/><br/>OAuth2를 활용해 구글 / 네이버 / 카카오 로그인 연동을 할 수 있습니다.<br/><br/>
 + 메인화면<br/><br/>
 ![메인화면](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140019.png)
-저희 커뮤니티의 메인화면입니다.
+<br/><br/>저희 커뮤니티의 메인 화면입니다.<br/><br/>
 + 상단바<br/><br/>
 ![상단바](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140506.png)
 <br/><br/>기본값은 최신글 보기이며 10추글 보기 버튼을 통해 추천을 10개 이상 받은 게시글들만 볼 수 있습니다.<br/>
 또한 검색기능으로 제목 / 작성자 / 내용 / 제목 + 내용 으로 원하는 글을 검색할 수 있습니다.<br/><br/>
 + 사이드바<br/><br/>
 ![사이드바](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140520.png)
+<br/><br/>로컬 스토리지를 활용해 최근 본 글 3개를 저장하는 기능을 구현했습니다.<br/>
+또한 카테고리별로 원하는 게시글을 볼 수 있습니다.<br/><br/>
 +글 상세정보<br/><br/>
 ![글 상세정보](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140219.png)
+<br/><br/>게시글을 클릭했을 때 보이는 화면입니다.<br/>
+글은 물론 이미지, 동영상도 첨부할 수 있습니다.<br/><br/>
 + 댓글<br/><br/>
 ![댓글](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140234.png)
+<br/><br/>게시글에 댓글을 작성할 수 있습니다. 답글쓰기를 눌러 댓글에 답글도 달 수 있으며 좋아요 / 싫어요 역시 가능합니다.<br/>
+댓글보기는 기본 추천순으로 정렬되며 최신순 버튼으로 최신 댓글도 확인할 수 있습니다.<br/><br/>
 + 글 작성<br/><br/>
 ![글 작성](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140259.png)
+<br/><br/>CKEditor를 통해 글을 작성할 수 있습니다.<br/>
+글씨크기, 굵기는물론 이미지, 동영상도 첨부하여 작성할 수 있습니다.<br/><br/>
 + 마이페이지<br/><br/>
 ![마이페이지](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140034.png)
+<br/><br/>마이페이지에는 내가 추천한 글, 내가 쓴 글, 나의 댓글들을 확인할 수 있고 링크를 통해 바로 해당 게시글로 접근할 수 있습니다.<br/>
+또한 닉네임과 응원팀 이미지도 수정할 수 있으며 회원탈퇴도 가능합니다.<br/><br/>
 + 실시간 채팅<br/><br/>
 ![실시간채팅](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140334.png)
+<br/><br/>웹소켓으로 구현한 실시간 채팅입니다.<br/>
+실시간으로 커뮤니티에 접속한 모든 사람들과 의견을 공유할 수 있습니다.<br/><br/>
 + 실시간 알림<br/><br/>
 ![실시간알림](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140428.png)
+<br/><br/>웹소켓으로 구현한 실시간 알림입니다.<br/>
+다른사람이 내가 작성한 게시글에 댓글을 달거나, 나의 댓글에 답글이 달렸을 때 5초간 실시간 알림이 보여집니다.<br/><br/>
 
