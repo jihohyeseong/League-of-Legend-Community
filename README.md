@@ -96,23 +96,23 @@
 <br/>
 
 ## 구현화면
-1. 로그인 모달창
+1. 로그인 모달창<br/>
 ![로그인](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140005.png)
-2. 메인화면
+2. 메인화면<br/>
 ![메인화면](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140019.png)
-3. 상단바
+3. 상단바<br/>
 ![상단바](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140506.png)
-4. 사이드바
+4. 사이드바<br/>
 ![사이드바](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140520.png)
-5. 글 상세정보
+5. 글 상세정보<br/>
 ![글 상세정보](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140219.png)
-6. 댓글
+6. 댓글<br/>
 ![댓글](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140234.png)
-7. 글 작성
+7. 글 작성<br/>
 ![글 작성](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140259.png)
-8. 마이페이지
+8. 마이페이지<br/>
 ![마이페이지](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140034.png)
-9. 실시간 채팅
+9. 실시간 채팅<br/>
 ![실시간채팅](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140334.png)
-10. 실시간 알림
+10. 실시간 알림<br/>
 ![실시간알림](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140428.png)
