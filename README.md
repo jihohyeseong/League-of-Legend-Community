@@ -98,8 +98,6 @@
 ## 구현화면
 1. 로그인 모달창<br/><br/>
 ![로그인](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140005.png)
-<br/>
-OAuth2를 활용해 구글 / 네이버 / 카카오 계정으로 로그인 연동을 할 수 있습니다.
 3. 메인화면<br/><br/>
 ![메인화면](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140019.png)
 <br/>
