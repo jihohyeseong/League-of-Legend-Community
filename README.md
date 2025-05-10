@@ -110,7 +110,7 @@
 ![사이드바](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140520.png)
 <br/><br/>로컬 스토리지를 활용해 최근 본 글 3개를 저장하는 기능을 구현했습니다.<br/>
 또한 카테고리별로 원하는 게시글을 볼 수 있습니다.<br/><br/>
-+글 상세정보<br/><br/>
++ 글 상세정보<br/><br/>
 ![글 상세정보](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140219.png)
 <br/><br/>게시글을 클릭했을 때 보이는 화면입니다.<br/>
 글은 물론 이미지, 동영상도 첨부할 수 있습니다.<br/><br/>
