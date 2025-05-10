@@ -99,25 +99,25 @@
 + 로그인 모달창
 ![로그인](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140005.png)
 
-<h4>메인화면</h4>
++메인화면
 ![메인화면](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140019.png)
 저희 커뮤니티의 메인화면입니다.
-상단바<br/><br/>
++상단바<br/><br/>
 ![상단바](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140506.png)
 <br/><br/>기본값은 최신글 보기이며 10추글 보기 버튼을 통해 추천을 10개 이상 받은 게시글들만 볼 수 있습니다.<br/>
 또한 검색기능으로 제목 / 작성자 / 내용 / 제목 + 내용 으로 원하는 글을 검색할 수 있습니다.<br/><br/>
-사이드바<br/>
++사이드바<br/>
 ![사이드바](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140520.png)
-글 상세정보<br/>
++글 상세정보<br/>
 ![글 상세정보](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140219.png)
-댓글
++댓글
 ![댓글](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140234.png)
-글 작성
++글 작성
 ![글 작성](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140259.png)
-마이페이지
++마이페이지
 ![마이페이지](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140034.png)
-실시간 채팅
++실시간 채팅
 ![실시간채팅](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140334.png)
-실시간 알림
++실시간 알림
 ![실시간알림](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140428.png)
 
