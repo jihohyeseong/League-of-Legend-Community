@@ -96,9 +96,9 @@
 <br/>
 
 ## 구현화면
-<h4>로그인 모달창</h4><br/><br/>
+<h4>로그인 모달창</h4>
 ![로그인](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140005.png)
-<br/>메인화면<br/><br/>
+<h4>메인화면</h4>
 ![메인화면](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140019.png)
 저희 커뮤니티의 메인화면입니다.
 상단바<br/><br/>
