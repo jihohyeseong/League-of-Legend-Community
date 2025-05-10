@@ -97,7 +97,7 @@
 
 ## 구현화면
 1. 로그인 모달창
-[![로그인](https://github.com/user-attachments/assets/44926421-7e3a-4648-a3bf-b6ccb0645f68)](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140005.png)
+[[![로그인](https://github.com/user-attachments/assets/44926421-7e3a-4648-a3bf-b6ccb0645f68)](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140005.png)](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140005.png)
 2. 메인화면
 ![팅메인화면 실시간채](https://github.com/user-attachments/assets/ab62c13c-a163-4189-8c78-d05b2eed81d9)
 3. 상세페이지
