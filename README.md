@@ -96,7 +96,7 @@
 <br/>
 
 ## 구현화면
-<h4>로그인 모달창</h4>
++ 로그인 모달창
 ![로그인](https://github.com/jihohyeseong/League-of-Legend-Community/blob/main/images/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202025-05-10%20140005.png)
 
 <h4>메인화면</h4>
